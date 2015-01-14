@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+
+<if condition="$sresult|is_array">
+<div class="container-fluid">
+	<div class="row">
+		<ul class="bxslider">
+			<foreach name="sresult" item="one">
+		  		<li><a href="{$one.href}"><img class="col-md-12" style="padding-left:-10px;padding-right:-10px;" src="__APP__/{$one.image}" title="{$one.nameF}"/></a></li>
+		  	</foreach>
+		</ul>
+	</div>
+</div>
+</if>
+<br/>
+<div class="container">
+	<div class="row">
+		<div class="list-group">
+
+		<volist name="result" id="vo">
+		   <a href="__URL__/elseintroduce?id={$vo.id}" class="list-group-item">
+		  	<div class="row">
+			  	<div class="col-md-10 col-xs-10">
+			  		<div class="row">
+			  			<div class="col-md-12 col-xs-12">
+			  			<label class="pull-left">{$vo.title}</label>
+			  			<label class="pull-right">{$vo.post_time}</label>
+			  			</div>
+			  		</div>
+			  		<div class="row">
+			  			<div class="col-md-12 col-xs-12">
+			  				{$vo.details|strip_tags|str_cut=54}...
+			  			</div>
+			  		</div>
+			  	</div>
+			  	<div class="col-md-2 col-xs-2">
+			  		<br/>
+			  		<div class="pull-right">
+			  			<i class="glyphicon glyphicon-circle-arrow-right pull-right"></i>
+			  		</div>
+			  	</div>
+
+		  	</div>
+		  </a>
+		</volist>
+
+	
+		</div>
+	</div>
+</div>
+
+
+</body>
+</html>
+{:FOOTERX_WAP()}
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.bxslider').bxSlider({auto: true});
+  $('.bx-controls-direction').remove();
+  //$('.bx-controls').remove();
+});
+</script>

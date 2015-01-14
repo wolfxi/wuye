@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a1}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"><a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="{:U('System/account')}">账户列表</a> <a href="javascript:" class="current">权限设置</a></div>
+  </div>
+<!--End-breadcrumbs-->
+
+<!--Action boxes-->
+  <div class="container-fluid">
+
+    <div class="row-fluid">
+        <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>权限</h5>
+        </div>
+        <div class="widget-content">
+         
+          <form action="{:U('System/account_auth_updata')}" method="post" class="form-horizontal" id="act_form">
+  <div class="control-group">
+    <label class="control-label" for="appendedInput">账户名称：</label>
+    <div class="controls">
+      <input size="16" name="title" class="input-append disabled" type="text" value="{$account.username}" disabled="">
+    </div>
+  </div>
+<volist name='group_list' id='vo'>
+  <div class="control-group">
+    <label class="control-label" for="appendedInput">{$vo.name}：</label>
+    <div class="controls">
+      <fieldset>
+        <ul class="changeapp">
+        <volist name='vo.list' id='voo'>
+          <li>
+            <label>
+            	<input name="menu[]" type="checkbox" <php>if(in_array($voo['id'],$group)){echo 'checked="checked"';}</php> value="{$voo.id}"> {$voo.title}
+            </label>
+          </li>
+		</volist>
+        </ul>
+      </fieldset>
+    </div>
+  </div>
+</volist>
+  
+  <div class="form-actions">
+    <input type="hidden" name="uid" value="{$account.uid}">
+    <button type="submit" id="btn_submit" class="btn btn-primary">提交</button>
+ </div>
+</form>
+          
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--end-main-container-part-->
+
+<include file="Public:footer" />
+
+        
+        
+</body>
+</html>
+{:FOOTERX()}
+<script>
+//提交
+$('form').submit(function(){
+	$(this).ajaxSubmit(function(data){
+		alert(data.msg);
+	});
+	return false;
+})
+
+</script>

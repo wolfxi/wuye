@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+	<!--breadcrumbs-->
+	<div id="content-header">
+		<h1>便民发布</h1>
+		<div id="breadcrumb">
+			<a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+			<a href="__URL__/index/navid/{$navid}" <if condition="$navid eq $forumlist['WY_BM']" >class="current"</if> >便民版块列表</a>
+			<foreach name="leftnav['wybm']" item="one">
+			<a href="__URL__/one_messagetype_list/id/{$one.id}/navid/{$navid}"  <if condition="$navid eq $one['id']" >class="current"</if>  class="current">{$one.name}</a>
+			</foreach>
+		</div>
+	</div>
+	<!--End-breadcrumbs-->
+	<!--Action boxes-->
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title">
+						<span class="icon"><i class="icon-th-list"></i></span>
+						<h5>{$aresult.name}</h5>
+					</div>
+					<div class="alert alert-error hide" id="alert_info">
+						<button type="button" class="close" onclick="$('#alert_info').hide();">×</button>
+						<div class="alert-body">
+							<span id="modal"></span>
+						</div>
+					</div>
+					<div class="widget-content nopadding">
+
+					<div class="alert alert-info">
+					    <div class="alert-body">
+					        <span>当前信息分类：【{$aresult.name}】-【
+					        	<if condition="$aresult.is_status eq 1">
+					        		<span class="label label-success">正常</span>】
+					        	<else/>
+					        		<span class="label label-danger">禁用</span>】
+					        	</if>
+					        </span>
+					    </div>
+					</div>
+					<form  method="post" class="form-horizontal">
+						<if condition="$mresult['is_user_post'] eq 0">
+						
+							<div class="control-group">
+								<label class="control-label">标题:</label>
+								<div class="controls">
+									<input type="text" class="span11" value="{$mresult.title}" name="title"  />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">创建时间 :</label>
+								<div class="controls">
+									<input type="text" class="datepicker span11" data-date="{$nowdate}" value="{$mresult.post_time}" data-date-format="yyyy-mm-dd" name="createdate"  />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">排序 :</label>
+								<div class="controls">
+									<input type="text" class="span11" value="{$mresult.sort}" name="sort"  />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">阅读量 :</label>
+								<div class="controls">
+									<input type="text" class="span11" value="{$mresult.click_num}" name="viewcount"  />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">设置:</label>
+								<div class="controls">
+									<label class="checkbox inline">
+										<input type="checkbox" value="1" <if condition="$mresult['is_status'] eq 1">checked="checked"</if>  name="status" />
+										启用</label>
+									<label class=" checkbox inline">
+										<input type="checkbox" value="1" name="top" <if condition="$mresult['is_top'] eq 1">checked="checked"</if>  />
+										置顶</label>
+									<input type="checkbox" value="1" <if condition="$mresult['is_diaplay_click'] eq 1">checked="checked"</if> name="is_viewcount"  />
+										显示阅读量</label>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">内容 :</label>
+								<div class="controls">
+									<textarea id="details" name="details"  rows="12"  style="width: 80%">{$mresult.details|stripcslashes}</textarea>
+								</div>
+							</div>
+							<script type="text/javascript">
+							    window.UEDITOR_HOME_URL='__APP__/Public/admin/js/ueditor/';
+							    window.onload=function(){
+							      window.UEDITOR_CONFIG.initialFrameWidth=810;//初始化编辑器宽度,默认1000
+							         window.UEDITOR_CONFIG.initialFrameHeight=400;  //初始化编辑器高度,默认320
+							         window.UEDITOR_CONFIG.elementPathEnabled =false;
+							        UE.getEditor('details');
+							    }
+							</script>
+							<else/>
+								<volist name="fresult" id="vo">
+						            <switch name="vo.type" >
+						            <case value="1" ><!--但文本框-->
+						                <div class="control-group">
+						                <label class="control-label" for="appendedInput">{$vo.name}</label>
+						                <div class="controls">
+						                    <input class="span11" type="text" value="<php>echo $mresult['form_content'][$vo['id']];</php>" name="model[{$vo.id}]" placeholder="{$vo.defaultvalue}" disabled>
+						                    </div>
+						                </div>
+						            </case>
+						            <case value="2"><!--多文本框-->
+						                <div class="control-group">
+						                <label class="control-label" for="appendedInput">{$vo.name}</label>
+						               	<div class="controls">
+						                <textarea class="span11" name="model[{$vo.id}]" id="remark" rows="5" placeholder="{$vo.defaultvalue}" disabled><php>echo $mresult['form_content'][$vo['id']];</php></textarea>
+						              	</div>
+						                </div>
+						            </case>
+						            <case value="3"><!--下拉框-->
+						                    <div class="control-group">
+						                    <notempty name="vo.options">
+						                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+						              		<div class="controls">
+						                    <select name="model[{$vo.id}]" class="form-control" disabled>
+						                     <foreach name="vo.options" key="key" item="one">
+						                        <option value="{$key}" <if condition="$mresult['form_contetn'][$vo['id']] eq $one">checked="checked"</if> >
+						                           {$one}
+						                        </option>
+						                   </foreach>
+						                    </select>
+						                   </div>
+						                    </notempty>
+						                    </div>
+						            </case>
+						            <case value="4"><!--单选框-->
+						                    <div class="control-group">
+						                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+						                    <div class="controls">
+						                    <foreach name="vo.options" key="radio" item="radioo">
+						                    <input type="radio" <if condition="$mresult['form_contetn'][$vo['id']] eq $one">checked="checked"</if> name="model[{$vo.id}]" value="{$radioo}" disabled>{$radioo}
+						                    </foreach>
+						                    </div>
+						                    </div>
+						            </case>
+						            <case value="5"><!--多选框-->
+						                    <div class="control-group">
+						                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+						                   <div class="controls">
+						                    <foreach name="vo.options" key="chec" item="check">
+						                    <input type="checkbox" <if condition="$mresult['form_contetn'][$vo['id']] eq $check">checked="checked"</if> value="{$check}"  name="model[{$vo.id}][]" disabled>{$check}
+						                    </foreach>
+						                   </div>
+						                    </div>
+						            </case>
+						            <default /><!--上传按钮      -->
+						                    <div class="control-group">
+							                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+							                    <div class="controls">
+							                    <input id="image" type="text" class="span11"  name="model[{$vo.id}]" disabled>
+							                    <img src="__APP__/<php>echo $mresult['form_content'][$vo['id']];</php>" height="80px" width="160px;"/>
+						                   		</div>
+						                    </div>
+						            </switch>
+						       </volist>
+						       </form>
+						       <form  method="post" action="__URL__/change_clicknum" class="form-horizontal" id="viewform">
+						       	<div class="control-group">
+									<label class="control-label">阅读量 :</label>
+									<div class="controls">
+										<input type="hidden" value="{$mresult.id}" name="id"/>
+										<input type="text" class="span8" value="{$mresult.click_num}" name="viewcount"/>
+										<input type="submit" class="btn btn-primary span2" value="保存"/> 
+									</div>
+								</div>
+								</form>
+							</if>
+							
+
+							<foreach name="replay" item="one">
+								<div class="alert alert-info alert-block"> 
+									<a class="close" onclick="delete_one('{$one.id}');"  href="javascript:void(0);" >×</a>
+					              	<h4 class="alert-heading">{$one.name}:</h4>
+					             	<p>
+								       	{$one.replay_info}
+								    </p> 
+								    <br/>
+								    <span class="pull-right">{$one.time}</span>
+					            </div>
+							</foreach>
+							<div class="pagination alternate text-center">
+								<ul>
+									{$page}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!--end-main-container-part-->
+
+				<include file="Public:footer" />
+				<input name="del_value" id="del_value" type="hidden" value="0"/>
+				{:FOOTERX()}
+				<script type="text/javascript">
+
+					$('#viewform').submit(function(){
+					  $(this).ajaxSubmit({
+					    type: "post",
+					    dataType: "json",
+					    success: function(data){
+					      alert(data.msg);
+					    if(data.status==1){
+					      window.location.reload();
+					    }
+					    //mmodal({content:data.msg});
+					    }
+					  });
+					  return false;
+					});
+
+				    //删除
+					function delete_one(id){
+						var id=id;
+						$('#del_value').val(id);
+						mmodal({content:'确认删除该条回复',ok:1,closen:'取消'});
+					}
+					$(document).on('click','#mmodal_ajax_ok', function (e) {
+							//$('#myModal').modal('hide');
+							var id = $('#del_value').val();
+							$.post("__URL__/delete_reply",{id:id},function(data){
+								if(data.flag==1){
+									window.location.reload();
+								}
+								});
+							})
+
+				  </script>
+</body>
+</html>

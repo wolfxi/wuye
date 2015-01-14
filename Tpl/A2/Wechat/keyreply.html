@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+<include file="Public:header" /> 
+
+<!--main-container-part-->
+<div id="content">
+  <div id="content-header">
+    <h1>微信管理</h1>
+  </div>
+  <div id="breadcrumb"> <a class="tip-bottom" href="{:U('Index/index')}" data-original-title=""> <i class="icon-home"></i> 首页 </a> <a href="{:U('Wechat/config')}">微信设置</a> <a class="current" href="{:U('Wechat/keyreply')}">关键字回复设置</a> <a href="{:U('Wechat/tuwenreply')}">图文回复设置</a> <a href="{:U('Wechat/menu')}">自定义菜单</a> </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th-list"></i> </span>
+            <h5>关键字回复设置</h5>
+            <div class="buttons"> <a class="btn btn-mini" href="{:U('Wechat/reply_add')}" title="新建关键字回复"> <i class="icon-plus"></i> </a> </div>
+          </div>
+          <div class="widget-content">
+            <div class="invoice-content">
+              <div id="alert_info" class="alert alert-error hide">
+                <button class="close" onclick="$('#alert_info').hide();" type="button">×</button>
+                <div class="alert-body"> <span id="modal"></span> </div>
+              </div>
+              <div>
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>编号</th>
+                      <th>规则名称</th>
+                      <th>规则说明</th>
+                      <th>关键字</th>
+                      <th>模式/状态</th>
+                      <th>创建时间</th>
+                      <th>更新时间</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th colspan="8"> <div class="dataTables_info" align="left">
+
+                         <input id="selectAll" class="btn" type="button" value="全选" >
+                       <input id="selectNone"  class="btn" type="button" value="反选" >
+                       <input id="cancel"  class="btn" type="button" value="取消" name="cancel">
+                        <a class="btn" href="#static_dels" onclick="deletes();"  id="deltet" data-toggle="modal">删除</a> </div>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th colspan="8"> <div class="pagination alternate">
+                          <ul>
+                            <li>{$page}</li>
+                          </ul>
+                        </div>
+                      </th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  <volist name="res" id="vo">
+                    <tr id="list_data_129">
+                      <td><label>
+                              <input   id="dels_{$vo.id}" type="checkbox" value="{$vo.id}" name="dels[]" >
+                        {$vo.id}
+                        </label></td>
+                      <td class="center">{$vo.rule_name}</td>
+                      <td class="center">{$vo.rule_remark}</td>
+                      <td class="center">{$vo.key_words}</td>
+                      <td class="center">
+                        <if condition="$vo.match eq 0">
+                        <span class="label">
+                        模糊匹配
+                         </span>
+                        <else />
+                        <span class="label label-success">精确匹配</span>
+                        </if>
+                        <if condition="$vo.is_status eq 1">
+                        <span class="label label-success">正常 </span>
+                        <else />
+                       <span class="label label-important">禁用</span>
+                        </if>
+                      </td>
+                      <td class="center">{$vo.create_time}</td>
+                      <td class="center">{$vo.update_time}</td>
+                      <td class="center"><a class="btn btn-info" href="{:U('Wechat/editreply')}?id={$vo.id}"> <i class="icon-edit icon-white"></i> 编辑 </a> <a class="btn btn-danger" id="{$vo.id}" href="#static" data-toggle="modal"> <i class="icon-trash icon-white"></i> 删除 </a></td>
+                    </tr>
+                    </volist>
+                  </tbody>
+                </table>
+              </div>
+              <div class="alert alert-info">
+                <form class="form-inline" id="serach" method="post" action="{:U('Wechat/search_key')}">
+                  规则名称
+                  <input type="text" style="width:100px" maxlength="40" size="35" value="" name="rule_name">
+                  关键字
+                  <input type="text" style="width:100px" maxlength="40" size="35" value="" name="key_words">
+                  <button class="btn" type="submit">搜索</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+</div>
+<!--end-main-container-part--> 
+{:FOOTERX()}
+{:SELECT()}
+<include file="Public:footer" />
+<input name="del_value" type="hidden" id="del_value" value="0">
+
+<script>
+
+$('.btn-danger').click(function(){
+  var r=confirm("确定删除？");
+  if(r==true){
+     var id=$(this).attr('id');
+  $("#del_value").val(id);
+  var del_id=$("#del_value").val();
+  $.post("{:U('Wechat/keydel')}",{id:del_id},function(data){
+    if(data.status==1){
+        alert("删除成功");
+        window.location.reload();
+    }else{
+      alert("删除失败");
+    }
+  })
+  }
+ 
+})
+</script>
+
+
+<script type="text/javascript">
+   
+   function deletes(){
+    var del_ids="";
+    $("[name='dels[]']:checkbox").each(function(){
+      if ($(this).is(":checked")){
+        del_ids=del_ids+','+$(this).val();
+      }
+    }); 
+    del_ids=del_ids.replace(",","");
+
+    $.ajax({
+      type: 'POST',
+      url: "__URL__/del_manykey/",
+      data:{id:del_ids},
+      dataType: "json",
+      success: function(data) {
+        if(data.status==1){
+            window.location.reload();
+        }
+        mmodal({content:data.msg});
+      }
+    });
+  
+  }
+
+
+</script>
+
+</body>
+</html>
+

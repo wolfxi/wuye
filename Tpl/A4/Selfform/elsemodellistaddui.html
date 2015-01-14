@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+<!--sidebar-menu-->
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb">
+        <a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+        <a href="{:U('Selfform/index')}?navid={$navid}" <if condition="$navid eq $forumlist['WY_FORM']" >class="current"</if>>物业表单</a>
+        <foreach name="leftnav['wyform']" item="one">
+          <a href="__GROUP__/Selfform/elseModelList/navid/{$one.id}/id/{$one.id}" <if condition="$navid eq $one['id']" >class="active"</if>>{$one.name}</a>
+        </foreach>
+
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>小区维护</h5>
+          </div>
+          <div class="widget-content ">
+          <div class="alert alert-info">
+            <div class="alert-body">
+              <span>当前表单：【小区维护】-小区维护</span>
+            </div>
+          </div>
+
+
+        <form id="act_form" class="form-horizontal" method="post" action="{:U('Selfform/elsemodellistadd')}">
+        <div class="control-group">
+        <label class="control-label" for="appendedInput">当前用户</label>
+        <div class="controls">
+        <a onclick="openWxUser('');" href="#">匿名</a>
+        </div>
+        </div>
+
+
+          <!--显示动态文本框等内容s-->
+        
+            <volist name="result" id="vo">
+            <switch name="vo.type" >
+            <case value="1" ><!--但文本框-->
+                <div class="control-group">
+                <label class="control-label" for="appendedInput">{$vo.name}</label>
+                <div class="controls">
+                    <input class="span11" type="text" value="{$vo.defaultvalue}" name="model[{$vo.id}]">
+                </div>
+                </div>
+            </case>
+            <case value="2"><!--多文本框-->
+                <div class="control-group">
+                <label class="control-label" for="appendedInput">{$vo.name}</label>
+                <div class="controls">
+                <textarea class="span11" name="model[{$vo.id}]" id="remark" style="height: 50px;">{$vo.defaultvalue}</textarea>
+                </div>
+                </div>
+            </case>
+            <case value="3"><!--下拉框-->
+                    <div class="control-group">
+                    <notempty name="vo.options">
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                    <div class="controls">
+                    <select name="model[{$vo.id}]">
+                     <foreach name="vo.options" key="key" item="one">
+                        <option value="{$key}" >
+                           {$one}
+                        </option>
+                   </foreach>
+                    </select>
+                    </div>
+                    </notempty>
+                    </div>
+            </case>
+            <case value="4"><!--单选框-->
+                    <div class="control-group">
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                    <div class="controls">
+                    <foreach name="vo.options" key="radio" item="radioo">
+                    <input type="radio"  name="model[{$vo.id}]" value="{$radioo}">{$radioo}
+                    </foreach>
+                    </div>
+                    </div>
+            </case>
+            <case value="5"><!--多选框-->
+                    <div class="control-group">
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                    <div class="controls">
+                    <foreach name="vo.options" key="chec" item="check">
+                    <input type="checkbox" value="{$check}"  name="model[{$vo.id}][]">{$check}
+                    </foreach>
+                    </div>
+                    </div>
+            </case>
+            <case value="6"><!--密码框-->
+                    <div class="control-group">
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                    <div class="controls">
+                    <input type="password" name="model[{$vo.id}]" class="span11">
+                    </div>
+                    </div>
+            </case>
+            <case value="7">
+                    <div class="control-group"><!--隐藏域-->
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                    <div class="controls">
+                    <input type="hidden" value="{$hidden}" name="model[{$vo.id}]">
+                    </div>
+                    </div>
+            </case>
+            <default /><!--上传按钮      -->
+                    <div class="control-group">
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                    <div class="controls">
+                    <input id="image" type="text" class="span11"  name="model[{$vo.id}]">
+                    <div class="fileInputContainer">
+                    <input  class="fileInput" type="file" id="choseimg" name="choseimg" onchange="ajaxuploadimage('choseimg','__URL__','__APP__');">
+                    </div>
+                    </div>
+                    </div>
+            </switch>
+
+       </volist>
+        
+   <!--显示动态文本框等内容e-->
+        <div class="control-group">
+        <label class="control-label" for="appendedInput">处理状态</label>
+        <div class="controls">
+        <select id="handle_status" name="handle_status" class="selectpicker" data-width="150px" name="type" >
+        <option value="0">未处理</option>
+        <option value="2">处理中</option>
+        <option value="1">已处理</option>
+        </select>
+        </div>
+        </div>
+        <div class="control-group">
+        <label class="control-label" for="appendedInput">用户评论</label>
+        <div class="controls">
+        <select id="assess" name="assess" class="selectpicker" data-width="150px"  >
+        <option value="0">未点评</option>
+        <option value="1">好评</option>
+        <option value="2">差评</option>
+        </select>
+       
+        </div>
+        </div>
+        <div class="control-group">
+        <label class="control-label" for="appendedInput">备注</label>
+        <div class="controls">
+        <textarea class="span11" name="remark" id="remark" style="height: 40px;"></textarea>
+        </div>
+        </div>
+        <div class="form-actions">
+        <input id="sub" type="hidden" value="sub" name="sub">
+        <input type="hidden" value="" name="id">
+        <button id="btn_submit" class="btn btn-primary" type="submit">提交</button>
+        <button id="btn_submit" class="btn btn-primary" type="reset">取消</button>
+        </div>
+        </form>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end-main-container-part-->
+<include file="Public:footer" />
+</body>
+</html>
+{:FOOTERX()}
+<script type="text/javascript">
+$('form').submit(function(){
+  $(this).ajaxSubmit({
+    type: "post",
+    dataType: "json",
+    success: function(data){
+    if(data.status==1){
+      window.location.href="{:U('Selfform/index')}";
+    }
+    mmodal({content:data.msg});
+    }
+  });
+  return false;
+});
+</script>

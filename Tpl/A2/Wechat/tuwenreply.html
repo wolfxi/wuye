@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+<include file="Public:header" /> 
+
+<!--main-container-part-->
+<div id="content">
+	<div id="content-header">
+		<h1>微信管理</h1>
+	</div>
+	<div id="breadcrumb"> <a class="tip-bottom" href="{:U('Index/index')}" data-original-title=""> <i class="icon-home"></i> 首页 </a> <a href="{:U('Wechat/config')}">微信设置</a> <a href="{:U('Wechat/keyreply')}">关键字回复设置</a> <a class="current" href="{:U('Wechat/tuwenreply')}">图文回复设置</a> <a href="{:U('Wechat/menu')}">自定义菜单</a> </div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title"><span class="icon"><i class="icon-th-list"></i></span>
+						<h5>图文回复设置</h5>
+						<div class="buttons"><a href="{:U('Wechat/add_tuwen')}" class="btn btn-mini" title="新建图文回复"><i class="icon-plus"></i></a></div>
+					</div>
+					<div class="widget-content">
+						<div class="invoice-content">
+							<div id="alert_info" class="alert alert-error hide">
+								<button onclick="$('#alert_info').hide();" class="close" type="button">×</button>
+								<div class="alert-body"><span id="modal"></span></div>
+							</div>
+							<div>
+								<table class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>编号</th>
+											<th>规则名称</th>
+											<th>规则说明</th>
+											<th>关键字</th>
+											<th>模式/状态</th>
+											<th>创建时间</th>
+											<th>更新时间</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tfoot>
+										<tr>
+											<th colspan="8"><div align="left" class="dataTables_info">
+										     <input id="selectAll" class="btn" type="button" value="全选" >
+					                       <input id="selectNone"  class="btn" type="button" value="反选" >
+					                       <input id="cancel"  class="btn" type="button" value="取消" name="cancel">
+					                        <a class="btn" href="#static_dels" onclick="deletes();"  id="deltet" data-toggle="modal">删除</a> </div>
+										</tr>
+										<tr>
+											<th colspan="8"><div class="pagination alternate">
+													<ul>
+														{$page}
+													</ul>
+											</div></th>
+										</tr>
+									</tfoot>
+									<tbody>
+									<foreach name="list" item="one">
+										<tr>
+											<td>
+												<label class="checkbox inline">
+													<input type="checkbox" value="{$one.id}" id="dels_{$one.id}" name="dels[]" />{$one.id}
+												</label>
+											</td>
+											<td class="center">{$one.rule_name}</td>
+											<td class="center">{$one.rule_remark}</td>
+											<td class="center">{$one.key_words}</td>
+											<td class="center">
+												<if condition="$one['match'] eq 1">
+													<span class="label">精确匹配</span>&nbsp;&nbsp;
+												<else/>
+													<span class="label">模糊匹配</span>&nbsp;&nbsp;
+												</if>
+												<if condition="$one['is_status'] eq 1">
+													<span class="label label-success">正常</span>
+												<else/>
+													<span class="label label-success">禁用</span>
+												</if>
+											</td>
+											<td class="center">{$one.create_time}</td>
+											<td class="center">{$one.update_time}</td>
+											<td class="center">
+												<a href="__URL__/edittuwen/id/{$one.id}" class="btn btn-info">
+													<i class="icon-edit icon-white"></i> 编辑 
+												</a>
+												<a class="btn btn-danger" id="{$one.id}" href="#static" data-toggle="modal"> <i class="icon-trash icon-white"></i> 删除 </a></td>
+											</td>
+										</tr>
+										</foreach>
+									</tbody>
+								</table>
+							</div>
+							<div class="alert alert-info">
+								<form class="form-inline" method="post" action="__URL__/search_tuwen">
+									规则名称
+									<input type="text" style="width:100px" maxlength="40" size="35" value="" name="name">
+									关键字
+									<input type="text" style="width:100px" maxlength="40" size="35" value="" name="keyword">
+									<button class="btn" type="submit">搜索</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+</div>
+<!--end-main-container-part--> 
+{:FOOTERX()}
+{:SELECT()}
+<include file="Public:footer" />
+<input id="del_value" value="" type="hidden"/>
+</body>
+</html>
+<script>
+
+$('.btn-danger').click(function(){
+  var r=confirm("确定删除？");
+  if(r==true){
+     var id=$(this).attr('id');
+  $("#del_value").val(id);
+  var del_id=$("#del_value").val();
+
+  $.post("__URL__/delete_one",{id:del_id},function(data){
+    if(data.status==1){
+        alert("删除成功");
+        window.location.reload();
+    }else{
+      alert("删除失败");
+    }
+  })
+  }
+ 
+})
+
+function deletes(){
+		var del_ids="";
+		$("[name='dels[]']:checkbox").each(function(){
+			if ($(this).is(":checked")){
+				del_ids=del_ids+','+$(this).val();
+			}
+		}); 
+		del_ids=del_ids.replace(",","");
+		$.ajax({
+			type: 'POST',
+			url: "__URL__/delete_one_model/",
+			data:{id:del_ids},
+			dataType: "json",
+			success: function(data) {
+				if(data.status==1){
+					window.location.reload();
+				}else{
+					window.alert(data.msg);								
+				}
+			}
+		});
+	
+	}
+</script>
+
+

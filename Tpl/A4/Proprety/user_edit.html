@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+<style type="text/css" rel="stylesheet">
+	body{
+		background: none repeat scroll 0% 0% #EEEEEE
+	}
+</style>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box">
+        <div class="widget-title"><span class="icon"><i class="icon-comment"></i></span>
+          <h5>编辑</h5>
+        </div>
+        <div class="widget-content nopadding">
+          <form action="__URL__/user_user_updata" method="post" class="form-horizontal" id="act_form">
+            <div class="control-group">
+              <label class="control-label" for="appendedInput">微信信息</label>
+              <div class="controls"> 微信标识:{$user.openid}<br>
+                <!--微信号: <br />--> 微信名: {$user.weixin_name}<br>
+                地区: {$user.weixin_from|default='未知'}<br>
+                性别: <switch name='user.weixin_sex'><case value='1'>男</case><case value='2'>女</case><default />未知</switch><br>
+                <button type="button" id="btn_userupdate" class="btn btn-info">更新微信资料</button>
+              </div>
+            </div>
+            
+            <div class="control-group">
+              <label class="control-label" for="appendedInput">称呼</label>
+              <div class="controls">
+              	<input name="uname" type="text" id="uname" value="{$user.uname}">
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="appendedInput">备注</label>
+              <div class="controls">
+              	<input name="remark" type="text" id="remark" value="{$user.remark}">
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" id="btn_submit" class="btn btn-primary">提交</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+{:FOOTERX()}
+<script>
+$('#btn_userupdate').click(function(){
+	var openid='{$user.openid}';
+	$.post('__URL__/user_user_updata',{openid:openid},function(data){
+		alert(data.msg);		
+		window.location.reload();
+	});
+});
+$('#act_form').submit(function(){
+	var uname=$('#uname').val();
+	var remark=$('#remark').val();
+	var openid='{$user.openid}';
+	$.post('__URL__/user_edit',{uname:uname,remark:remark,openid:openid},function(data){
+		if(data.msg){
+			alert(data.msg);
+      window.parent.location.reload();
+      return false;	
+		}
+	});
+	return false;	
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+
+
+<div class="container">
+	<div class="row">
+		<h4 style="color:#ff4500;">{$number}-{$mresult.name}</h4>
+	</div>
+
+	<div class="row">
+			
+		<div class="pull-right">
+			<div class="btn-group">
+			  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			    选择显示的列<span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu"  role="menu">
+
+			  	<foreach name="property" key="key" item="one">
+			    <li>
+			    	 <div class="checkbox center-block">
+				        <label>
+				          <input type="checkbox"  <if condition="$one['is_status'] eq 1"> checked="checked"</if> onclick="show_hide('{$one.id}');"> {$key+1}
+				        </label>
+				    </div>
+			    </li>
+			    <li class="divider"></li>
+			    </foreach>
+			   
+			  </ul>
+			</div>
+		</div>
+
+	</div>
+	<br/>
+
+
+	<div class="row">
+		<table class="table table-striped table-condensed">
+ 			<thead>
+ 				<tr class="active">
+ 						<th>
+ 							序号
+ 						</th>
+ 					<foreach name="fresult" item="one">
+	 					<th>
+	 						{$one.name}
+	 					</th>
+ 					</foreach>
+ 				</tr>
+ 			</thead>
+ 			<tfoot>
+ 			</tfoot>
+
+ 			<tbody>
+ 				<foreach name="property" key="key" item="one">
+ 					<tr id="{$one.id}" <if condition="$one['is_status'] eq 0"> style="display:none;"</if> >
+ 						<td>{$key+1}</td>
+ 						<foreach name="fresult" item="one_one">
+							<td>
+								<php>
+									echo $one['form_content'][$one_one['id']];
+								</php>
+							</td>
+						</foreach>
+ 					</tr>
+ 				</foreach>
+ 			</tbody>
+
+		</table>
+
+
+	</div>
+
+	
+
+</div>
+
+
+</body>
+</html>
+{:FOOTERX_WAP()}
+<script>
+function show_hide(id){
+	
+	if($("#"+id).is(":visible")==false){
+		$("#"+id).show();
+	}else{
+		$("#"+id).hide();
+	}
+
+}
+</script>

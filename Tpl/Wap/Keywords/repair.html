@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="center-block"> <img src="__APP__/{$repair.image}" width="100%" height="100%" class="img-responsive"> </div>
+  </div>
+</div>
+<br/>
+<br/>
+<!-- <div class="container">
+  <div class="list-group"> <span  class="list-group-item"> 简介 </span> <span class="list-group-item"> {$repair.introduce} </span> <a href="__URL__/formintroduce/id/{$repair.id}" class="list-group-item"> <span> 详细介绍 </span> <i class="glyphicon glyphicon-chevron-right pull-right"></i> </a> <a href="__URL__/formhistory/id/{$repair.id}" class="list-group-item"> <span> 产看历史记录 </span> <i class="glyphicon glyphicon-chevron-right pull-right"></i> </a> </div>
+</div> -->
+<div class="container">
+  
+    <div class="center-block col-md-12 col-xs-12 col-sm-12">
+    <span>请填写以下信息</span>
+    <form role="form" method="post" action="__URL__/commitrepair/">
+
+       <!--显示动态文本框等内容s-->
+        
+            <volist name="result" id="vo">
+            <switch name="vo.type" >
+            <case value="1" ><!--但文本框-->
+                <div class="form-group">
+                <label  for="appendedInput">{$vo.name}</label>
+                    <input class="form-control" type="text" value="" name="model[{$vo.id}]" placeholder="{$vo.defaultvalue}">
+                </div>
+            </case>
+            <case value="2"><!--多文本框-->
+                <div class="form-group">
+                <label  for="appendedInput">{$vo.name}</label>
+               
+                <textarea class="form-control" name="model[{$vo.id}]" id="remark" rows="3" placeholder="{$vo.defaultvalue}"></textarea>
+              
+                </div>
+            </case>
+            <case value="3"><!--下拉框-->
+                    <div class="form-group">
+                    <notempty name="vo.options">
+                    <label  for="appendedInput">{$vo.name}</label>
+              
+                    <select name="model[{$vo.id}]" class="form-control">
+                     <foreach name="vo.options" key="key" item="one">
+                        <option value="{$key}" >
+                           {$one}
+                        </option>
+                   </foreach>
+                    </select>
+                   
+                    </notempty>
+                    </div>
+            </case>
+            <case value="4"><!--单选框-->
+                    <div class="form-group">
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                    
+                    <foreach name="vo.options" key="radio" item="radioo">
+                    <input type="radio"  name="model[{$vo.id}]" value="{$radioo}">{$radioo}
+                    </foreach>
+                    
+                    </div>
+            </case>
+            <case value="5"><!--多选框-->
+                    <div class="form-group">
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                   
+                    <foreach name="vo.options" key="chec" item="check">
+                    <input type="checkbox" value="{$check}"  name="model[{$vo.id}][]">{$check}
+                    </foreach>
+                   
+                    </div>
+            </case>
+            <case value="6"><!--密码框-->
+                    <div class="form-group">
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                   
+                    <input type="password" name="model[{$vo.id}]" class="form-control" placeholder="{$vo.defaultvalue}">
+                    
+                    </div>
+            </case>
+            <case value="7">
+                    <div class="form-group"><!--隐藏域-->
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                   
+                    <input type="hidden" value="{$hidden}" name="model[{$vo.id}]">
+                    
+                    </div>
+            </case>
+            <default /><!--上传按钮      -->
+                    <div class="form-group">
+                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+                    
+                    <input id="image" type="text" class="form-control"  name="model[{$vo.id}]">
+                    <div class="fileInputContainer">
+                    <input  class="fileInput" type="file" id="choseimg" name="choseimg" onchange="ajaxuploadimage('choseimg','__URL__');">
+                    </div>
+                   
+                    </div>
+            </switch>
+            <input type="hidden" value="{$repair.id}" name="aid"/>
+       </volist>
+       <br/>
+        <div class="row">
+          <input type="submit" value="提交表单" class="btn btn-primary form-control"/>
+       
+        </div>
+    </form>
+  </div>
+
+
+</div>
+
+
+
+</body>
+{:FOOTERX_WAP()}
+<script type='text/javascript' src="__APP__/Public/admin/js/jquery.ajaxfileupload.js"></script>
+<script type="text/javascript">
+
+$('form').submit(function(){
+  $(this).ajaxSubmit({
+    type: "post",
+    dataType: "json",
+    success: function(data){
+		alert(data.msg);    
+    }
+  });
+  return false;
+});
+
+function ajaxuploadimage(id,url){
+    $.ajaxFileUpload({
+        secureuri:false,
+        dataType: "json",//返回json格式的数据  
+        url:url+"/ajaxupload",//要访问的后台地址  
+        fileElementId:id,
+        success: function(data){
+            var flag=data.flag;
+            if(flag==1){
+                $("#image").val(data.msg);
+                return ;    
+            }else{
+                window.alert(data.msg);
+                return ;
+            }
+        }
+    });
+}
+</script>
+</html>

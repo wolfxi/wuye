@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+<!--sidebar-menu-->
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb">
+        <a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+        <a href="{:U('Selfform/index')}?navid={$navid}" <if condition="$navid eq $forumlist['WY_FORM']" >class="current"</if>>物业表单</a>
+        <foreach name="leftnav['wyform']" item="one">
+          <a href="__GROUP__/Selfform/elsemodellist/navid/{$one.id}/id/{$one.id}" <if condition="$navid eq $one['id']" >class="active"</if>>{$one.name}</a>
+        </foreach>
+
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>{$aresult.name}</h5>
+            <div class="buttons">
+            <a class="btn btn-mini" href="__URL__/edit_form/id/{$_GET['id']}" title="设置">
+            <i class="icon-wrench"></i>
+            </a>
+            <a class="btn btn-mini" href="__URL__/export_form/id/{$_GET['id']}" title="导出">
+            <i class="icon-download-alt"></i>
+            </a>
+            <a title="添加" class="btn btn-mini" href="{:U('Selfform/elsemodellistaddui')}?navid={$navid}"><i class="icon-plus"></i></a>
+          </div>
+          </div>
+          <div class="widget-content ">
+          <div class="alert alert-info">
+            <div class="alert-body">
+              <span>当前表单：{$aresult.name}</span>
+            </div>
+          </div>
+
+
+            <table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>     
+                  <th style="width:65px;">编号</th>
+                  <!-- <th>用户</th> -->
+                  <volist name="formresult" id="vo1">
+                    <th>{$vo1.name}</th>
+                  </volist>
+                  <th>状态</th>
+                  <th>创建时间</th>
+                  <th class="center taskOptions">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+              <volist name="result" id="vo">
+                <tr>
+                  <td>
+                    <label>
+                     <input type="checkbox" value="{$vo.id}" name="dels[]" id="dels_{$vo.id}" class="checkBoxSelect" />
+                      {$vo.id}
+                    </label>
+                  </td>
+                 <!--  <td>{$vo.account}</td> -->
+                  <volist name="formresult" id="vo2">
+                    <td> 
+                      <php>
+                          echo $vo['form_content'][$vo2[id]];
+                      </php>
+                    </td>
+                  </volist>
+                  <td>
+                    <switch name="vo.handle_status" >
+                    <case value="0" ><span class="label label-warning">未处理</span></case>
+                    <case value="1"><span class="label label-success">
+                    已处理</span>
+                          <switch name="vo.assess" >
+                          <case value="0" ><span class="label label-warning">未点评</span></case>
+                          <case value="1"><span class="label label-success">好评</span></case>
+                          <default /><span class="label label-important">差评</span>
+                          </switch>
+                    </case>
+                    <default /><span class="label label-important">处理中</span>
+                    </switch>
+                  </td>
+                  <td>{$vo.post_time}</td>
+                  <td class="center taskOptions">
+                  <a class="btn btn-info" href="{:U('Selfform/elsemodeleditui')}?id={$vo.id}">
+                  <i class="icon-edit icon-white"></i>
+                  编辑
+                  </a>
+                  <a class="btn btn-danger"  href="{:U('Selfform/del_elsemodel')}?id={$vo.id}" >
+                  <i class="icon-trash icon-white"></i>
+                  删除
+                  </a>
+                  </td>
+                </tr>
+                </volist>
+            
+            <!--全选s-->
+                <tr>
+                <th colspan="50">
+                <div class="dataTables_info" align="left">
+                <input id="selectAll"  class="btn" type="button" value="全选" >
+                <input id="selectNone"  class="btn" type="button" value="反选" >
+                <input id="cancel"  class="btn" type="button" value="取消" name="cancel">
+                <a class="btn" href="#static_dels" onclick="deletes();"  id="deltet" data-toggle="modal">删除</a>
+                </div>
+                </th>
+                </tr>
+              <!--全选e-->
+              <!--分页s-->
+                <tr>
+                <th class="center taskOptions" colspan="8">
+                <div class="pagination alternate">
+                <ul>
+                <li>
+                {$page} 
+                </li>
+                </ul>
+                </div>
+                </th>
+                </tr>
+              <!--分页e-->
+
+              </tbody>
+            </table>
+
+
+          <!--serarch s-->
+          <div class="alert alert-info">
+          <form class="form-inline" method="post" action="__URL__/elsemodellist/id/{$id}">
+          <input type="hidden" name="aid" value="{$id}">
+          
+          处理状态：
+          <select id="type" class="selectpicker" style="width:100px" data-width="50px" name="type">
+          <option value="-1">全部状态</option>
+          <option value="type0">未处理</option>
+          <option value="type2">处理中</option>
+          <option value="type1">已处理</option>
+          </select>
+         
+         
+          <button class="btn" type="submit">搜索</button>
+          </form>
+          </div>
+          </div>
+          </div>
+          </div>
+          </div>
+          </div>
+        <!--serarch e-->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end-main-container-part-->
+{:FOOTERX()}
+{:SELECT()}
+
+<include file="Public:footer" />
+<script type="text/javascript">
+$("#selectAll").click(function(){
+          $("[name='dels[]']:checkbox").each(function(){
+      $(this).prop("checked",true);   
+    }); 
+    })
+$("#selectNone").click(function(){
+
+      $("[name='dels[]']:checkbox").each(function(){
+      if ($(this).prop("checked",true);){
+        $(this).prop("checked",false);
+      }else{
+        $(this).prop("checked",true);
+      }
+    });
+})
+$("#cancel").click(function(){
+       $("[name='dels[]']:checkbox").each(function(){
+      if ($(this).is(":checked")){
+        $(this).prop("checked",false);
+      }
+    });
+})
+
+
+</script>
+ <script type="text/javascript">
+   
+   function deletes(){
+    var del_ids="";
+    $("[name='dels[]']:checkbox").each(function(){
+      if ($(this).is(":checked")){
+        del_ids=del_ids+','+$(this).val();
+      }
+    }); 
+    del_ids=del_ids.replace(",","");
+
+    $.ajax({
+      type: 'POST',
+      url: "__URL__/delete_one_model/",
+      data:{id:del_ids},
+      dataType: "json",
+      success: function(data) {
+        if(data.status==1){
+            window.location.reload();
+        }
+        mmodal({content:data.msg});
+      }
+    });
+  
+  }
+
+
+
+
+
+
+</script>
+       
+        
+</body>
+
+</html>

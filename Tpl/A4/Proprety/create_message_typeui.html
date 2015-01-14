@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+	<!--breadcrumbs-->
+	<div id="content-header">
+		<h1>物业管理</h1>
+		<div id="breadcrumb">
+			<a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a>
+			<a href="javascript:" class="current">物业列表</a>
+			<foreach name="navbar" item="one">
+			<a  href="__URL__/one_messagetype_list/id/{$one.id}" class="current">{$one.name}</a>
+			</foreach>
+		</div>
+	</div>
+	<!--End-breadcrumbs-->
+	<!--Action boxes-->
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title">
+						<span class="icon"><i class="icon-th-list"></i></span>
+						<h5>添加 物业信息</h5>
+					</div>
+					<div class="alert alert-error hide" id="alert_info">
+						<button type="button" class="close" onclick="$('#alert_info').hide();">×</button>
+						<div class="alert-body">
+							<span id="modal"></span>
+						</div>
+					</div>
+					<div class="widget-content nopadding">
+						<form action="__URL__/create_message_type" method="post" class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label">物业信息名称 :</label>
+								<div class="controls">
+									<input type="text" class="span11" name="name" placeholder="" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">状态属性 :</label>
+								<div class="controls">
+									<input type="text" class="span11" name="keyword" placeholder="" />多个,分隔
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">备注 :</label>
+								<div class="controls">
+									<textarea class="span11" name="introduce" rows="5" ></textarea>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">设置:</label>
+								<div class="controls">
+									<label class="checkbox inline">
+										<input type="checkbox" value="1" name="status" />
+										启用</label>
+									<label class=" checkbox inline">
+										<input type="checkbox" value="1" name="shortcut" />
+										快捷</label>
+								</div>
+							</div>
+							<div class="form-actions">
+									<button type="submit" class="btn btn-success">提交</button>
+									<a href="javascript:window.history.back();void(0);" class="btn">取消</a>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<!--end-main-container-part-->
+
+				<include file="Public:footer" />
+				{:FOOTERX()}
+				
+			
+</body>
+</html>

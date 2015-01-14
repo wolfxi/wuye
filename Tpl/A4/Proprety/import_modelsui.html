@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+	<!--breadcrumbs-->
+	<div id="content-header">
+		<h1>物业管理</h1>
+		<div id="breadcrumb">
+			<a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a>
+			<a href="javascript:" class="current">物业列表</a>
+			<foreach name="navbar" item="one">
+			<a  href="__URL__/one_messagetype_list/id/{$one.id}" class="current">{$one.name}</a>
+			</foreach>
+		</div>
+	</div>
+	<!--End-breadcrumbs-->
+	<!--Action boxes-->
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title">
+						<span class="icon"><i class="icon-th-list"></i></span>
+						<h5>导入 物业信息</h5>
+					</div>
+					<div class="alert alert-error hide" id="alert_info">
+						<button type="button" class="close" onclick="$('#alert_info').hide();">×</button>
+						<div class="alert-body">
+							<span id="modal"></span>
+						</div>
+					</div>
+					<div class="alert alert-success alert-block"> 
+			            <span>本功能为批量处理停车费.</span><br/>
+						<span style="color:red;">导入文档为EXCEL文件，列为(序号,物业编号,状态,显示,排序
+							<foreach name="fresult" item="one">
+								,{$one.name}
+							</foreach>
+						)。</span><br/>
+						<span>选择添加更新时，如果存在序号将更新，不存在序号将新增，序号错误忽略;</span><br/>
+						<span>选择删除时，如果存在序号将删除。</span><br/>
+						<span>状态列，如果没有可为空。</span><br/>
+						<span>显示列，0代表不显示，1代表显示。</span><br/>
+						<span style="color:red;">错误的列将自动忽略比如物业编号不存在，序号不存在等。</span>
+		             </div>
+					<div class="widget-content nopadding">
+
+						<form action="__URL__/import_models"  enctype ="multipart/form-data" method="post" class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label">文件 :</label>
+								<div class="controls">
+									<input type="file" class="span11" name="file" placeholder="" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">操作类型 :</label>
+								<div class="controls">
+									<label class="checkbox inline">
+										<input type="radio" checked="checked" value="1" name="update_delete" />
+										添加更新</label>
+									<label class=" checkbox inline">
+										<input type="radio" value="0" name="update_delete" />
+										删除</label>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">是否忽略第一行 :</label>
+								<div class="controls">
+									<input type="checkbox" value="1" name="diyihang" />
+								</div>
+							</div>
+							<div class="form-actions">
+									<input name="aid" value="{$aid}" type="hidden"/>
+									<button type="submit" class="btn btn-success">提交</button>
+									<a href="javascript:window.history.back();void(0);" class="btn">取消</a>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<!--end-main-container-part-->
+
+				<include file="Public:footer" />
+				{:FOOTERX()}
+				
+			
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"><a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="javascript:" class="current">自定义菜单</a></div>
+  </div>
+<!--End-breadcrumbs-->
+
+<!--Action boxes-->
+  <div class="container-fluid">
+
+    <div class="row-fluid">
+
+
+        <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>自定义菜单</h5>
+          <div class="buttons">
+          	<a class="btn btn-mini" href="{:U('Wechat/menu_add')}"><i class="icon-plus"></i></a>
+          </div>
+        </div>
+        <div class="widget-content">
+        
+        	<div class="invoice-content">
+              <div class="alert alert-error hide" id="alert_info">
+                <button type="button" class="close" onclick="$('javascript:alert_info').hide();">×</button>
+                <div class="alert-body"><span id="modal"></span></div>
+              </div>
+              <div>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>顶级菜单</th>
+                      <th>类型</th>
+                      <th>子菜单</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th colspan="4"><div class="dataTables_info" align="left"><a class="btn btn-info menu_up"><i class="icon-th-list icon-white"></i> 更新菜单到微信 </a>&nbsp; <a class="btn btn-info menu_del"><i class="icon-trash icon-white"></i> 删除微信菜单 </a></div></th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  <volist name='menu' id='vo'>
+                    <tr id="list_data_{$vo.id}">
+                      <td>{$vo.title}</td>
+                      <td class="center">
+                      	<eq name='vo.type' value='1'>{$vo.value}<else/><a href="{$vo.value}" target="_blank">访问链接</a></eq>
+                      </td>
+                      <td class="center table-bordered-xhj"><table class="table table-hover table-bordered-xhj">
+                          <tbody>
+                          
+                          <volist name='vo.submenu' id='voo'>
+                            <tr>
+                              <td class="center">{$voo.title}</td>
+                              <td class="center">
+                              	<eq name='voo.type' value='1'>{$voo.value}<else/><a href="{$voo.value}" target="_blank">访问链接</a></eq>
+                              </td>
+                              <td class="center"><div class="btn-group">
+                                  <button class="btn btn-info"><i class="icon-edit icon-white"></i> 操作</button>
+                                  <button data-toggle="dropdown" class="btn btn-info dropdown-toggle"><span class="caret"></span></button>
+                                  <ul class="dropdown-menu">
+                                    <li><a data-toggle="modal" href="javascript:void(0);" onClick="move('__URL__/move_menu_son/aid/{$vo.id}','UP','{$voo.id}');" class="sort" id="{$voo.id}" type='up'><i class="icon-arrow-up"></i> 上移 </a></li>
+                                    <li><a data-toggle="modal" href="javascript:void(0);" onClick="move('__URL__/move_menu_son/aid/{$vo.id}','DOWN','{$voo.id}');" class="sort" id="{$voo.id}" type='down'><i class="icon-arrow-down"></i> 下移 </a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="{:U('Wechat/menu_add',array('id'=>$voo[id]))}"><i class="icon-edit"></i> 编辑 </a></li>
+                                    <li class="divider"></li>
+                                    <li><a data-toggle="modal" href="#static" class="del" id="{$voo.id}"><i class="icon-trash"></i> 删除 </a></li>
+                                  </ul>
+                                </div></td>
+                            </tr>
+                            </volist>
+
+                          </tbody>
+                        </table></td>
+                      <td class="center"><div class="btn-group">
+                          <button class="btn btn-info"><i class="icon-edit icon-white"></i> 操作</button>
+                          <button data-toggle="dropdown" class="btn btn-info dropdown-toggle"><span class="caret"></span></button>
+                          <ul class="dropdown-menu">
+                            <li><a data-toggle="modal" href="javascript:void(0);" onClick="move('__URL__/move_menu_top','UP','{$vo.id}');" class="sort" id="{$vo.id}" type='up'><i class="icon-arrow-up"></i> 上移 </a></li>
+                            <li><a data-toggle="modal" href="javascript:void(0);" onClick="move('__URL__/move_menu_top','DOWN','{$vo.id}');" class="sort" id="{$vo.id}" class="sort" id="{$vo.id}" type='down'><i class="icon-arrow-down"></i> 下移 </a></li>
+                            <li class="divider"></li>
+                            <li><a href="{:U('Wechat/menu_add',array('id'=>$vo[id]))}"><i class="icon-edit"></i> 编辑 </a></li>
+                            <li class="divider"></li>
+                            <li><a data-toggle="modal" href="#static" class="del" id="{$vo.id}"><i class="icon-trash"></i> 删除 </a></li>
+                          </ul>
+                        </div></td>
+                    </tr>
+                    </volist>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+        </div>
+      </div>
+      
+      
+        
+      
+    </div>
+  </div>
+</div>
+
+<!--end-main-container-part-->
+
+<include file="Public:footer" />
+<input name="del_value" type="hidden" id="del_value" value="0">
+        
+        
+</body>
+</html>
+{:FOOTERX()}
+<script>
+//删除
+$('.del').click(function(){
+	var id=$(this).attr('id');
+	$('#del_value').val(id);
+	mmodal({content:'确认删除该菜单',ok:1,closen:'取消'});
+});
+$(document).on('click','#mmodal_ajax_ok', function (e) {
+	//$('#myModal').modal('hide');
+	var id = $('#del_value').val();
+	$.post("{:U('Wechat/menu_del')}",{id:id},function(data){
+		if(data.status==1){
+			window.location.href="{:U('Wechat/menu')}";
+		}
+		mmodal({content:data.msg});
+	});
+})
+
+//更新菜单
+$('.menu_up').click(function(){
+	$.post('__URL__/menu_up',function(data){
+		if(data.errcode==0){
+			mmodal({content:'更新菜单成功'});
+		}else{
+			mmodal({content:'更新菜单失败，失败代码：'+data.errcode});
+		}
+	});
+});
+
+//删除菜单
+$('.menu_del').click(function(){
+	$.post('__URL__/delmenu',function(data){
+		if(data.errcode==0){
+			mmodal({content:'删除菜单成功'});
+      window.location.reload();
+		}else{
+			mmodal({content:'删除菜单失败，失败代码：'+data.errcode});
+		}
+	});
+});
+</script>

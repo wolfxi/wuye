@@ -1,0 +1,161 @@
+<!--Header-part-->
+<div id="header">
+	<h1><a href="dashboard.html">Matrix Admin</a></h1>
+</div>
+<!--close-Header-part--> 
+
+
+<!--top-Header-menu-->
+<div id="user-nav" class="navbar navbar-inverse">
+	<ul class="nav">
+		<li  class="dropdown" id="profile-messages" ><a title="" href="javascript:" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text"><php>echo $_SESSION[C('SysUserSessionName')];</php></span><b class="caret"></b></a>
+		<ul class="dropdown-menu">
+			<li><a href="{:U('Index/user_edit')}?id=<?php echo $_SESSION[C('SysUserSessionUid')]?>"><i class="icon-user"></i> 修改资料</a></li>
+			
+		</ul>
+		</li>
+		<!--   <li class="dropdown" id="menu-messages"><a href="javascript:" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
+		      <ul class="dropdown-menu">
+		        <li><a class="sAdd" title="" href="javascript:"><i class="icon-plus"></i> 新消息</a></li>
+		        <li class="divider"></li>
+		        <li><a class="sInbox" title="" href="javascript:"><i class="icon-envelope"></i> 收件箱</a></li>
+		        <li class="divider"></li>
+		        <li><a class="sOutbox" title="" href="javascript:"><i class="icon-arrow-up"></i> 发件箱</a></li>
+		        <li class="divider"></li>
+		        <li><a class="sTrash" title="" href="javascript:"><i class="icon-trash"></i> 垃圾箱</a></li>
+		      </ul>
+		    </li>
+		    <li class=""><a title="" href="javascript:"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li> -->
+		<li class=""><a title="" href="{:U('Public/logout')}"><i class="icon icon-share-alt"></i> <span class="text">退出系统</span></a></li>
+	</ul>
+</div>
+<!--close-top-Header-menu-->
+
+
+<!--sidebar-menu-->
+<div id="sidebar"><a href="javascript:" class="visible-phone"><i class="icon icon-align-justify"></i> 菜单</a>
+	<ul>
+
+
+		<li class="<eq name='Think.MODULE_NAME' value='Index'></eq>"><a href="{:U('Index/index')}"><i class="icon icon-home"></i> <span>系统首页</span></a></li>
+
+		<li class="submenu <eq name='Think.MODULE_NAME' value='Shops'></eq>"><a href="javascript:"><i class="icon icon-cog"></i> <span>系统管理</span></a>
+		<ul <eq name='Think.MODULE_NAME' value='System'>style="display: block;"</eq>>
+			<li <if condition="is_int(strpos(ACTION_NAME,'account'))">style="font-weight:bold;color:#fff" </if>><a href="{:U('System/account')}">账户列表</a></li>
+
+			<li <if condition="is_int(strpos(ACTION_NAME,'wuye'))">style="font-weight:bold;color:#fff" </if>><a href="{:U('System/wuye')}">物业列表</a></li>
+
+			<li <if condition="is_int(strpos(ACTION_NAME,'wuyeselform'))">style="font-weight:bold;color:#fff" </if>><a href="{:U('System/wuyeselform')}">归属物业表单列表</a></li>
+		</ul>
+		</li>
+
+
+<if condition="in_array('微信管理',$menu_group)">
+
+		<li class="submenu"> <a href="javascript:"><i class="icon icon-comments"></i> <span>微信管理</span></a>
+		<ul <eq name='Think.MODULE_NAME' value='Wechat'>style="display: block;"</eq>>
+        	<if condition="in_array('微信设置',$menu_group)">
+				<li><a href="{:U('Wechat/config')}">微信设置</a></li>
+            </if>
+            <if condition="in_array('关键字回复设置',$menu_group)">
+				<li><a href="{:U('Wechat/keyreply')}" >关键字回复设置</a></li>
+            </if>
+            <if condition="in_array('图文回复设置',$menu_group)">
+                <li><a href="{:U('Wechat/tuwenreply')}" >图文回复设置</a></li>
+            </if>
+            <if condition="in_array('自定义菜单',$menu_group)">
+                <li><a href="{:U('Wechat/menu')}">自定义菜单</a></li>
+            </if>
+            <if condition="in_array('关注用户',$menu_group)">
+                <li><a href="{:U('Wechat/user')}">关注用户</a></li>
+            </if>
+            <if condition="in_array('用户分组',$menu_group)">
+				<li><a href="{:U('Wechat/group')}">用户分组</a></li>
+            </if>
+		</ul>
+		</li>
+        
+</if>
+
+<if condition="in_array('广告信息管理',$menu_group)">
+		<li class="submenu"> <a href="javascript:"><i class="icon icon-shopping-cart"></i> <span>广告信息管理</span></a> 
+		<ul <eq name='Think.MODULE_NAME' value='Wyads'>style="display: block;"</eq>>
+		<if condition="in_array('广告信息分类',$menu_group)">
+			<li><a href="{:U('Wyads/index')}">广告信息分类</a></li>
+		</if>
+			<foreach name="leftnav['wyads']" item="one">
+
+				<li <if condition="$navid eq $one['id']">style="font-weight:bold;color:#fff;"</if>>
+				<a href="__GROUP__/Wyads/one_messagetype_list/id/{$one.id}/navid/{$one.id}"  >{$one.name}</a></li>
+			</foreach>
+		</ul>
+		</li>
+</if>
+
+
+<if condition="in_array('信息发布管理',$menu_group)">
+
+
+		<li class="submenu"> <a href="javascript:"><i class="icon icon-shopping-cart"></i> <span>信息发布管理</span></a> 
+		<ul <eq name='Think.MODULE_NAME' value='Wyinfo'>style="display: block;"</eq>>
+        <if condition="in_array('信息分类列表',$menu_group)">
+			<li><a href="{:U('Wyinfo/index')}">信息分类列表</a></li>
+         </if>
+			<foreach name="leftnav['wyinfo']" item="one">
+				<li><a href="__GROUP__/Wyinfo/one_messagetype_list/navid/{$one.id}/id/{$one.id}">{$one.name}</a></li>
+			</foreach>
+		</ul>
+		</li>
+        
+</if>        
+
+
+<if condition="in_array('表单管理',$menu_group)">
+		<li class="submenu"> <a href="javascript:"><i class="icon icon-user"></i> <span>表单管理</span></a> 
+		<ul <eq name='Think.MODULE_NAME' value='Selfform'>style="display: block;"</eq>>
+        <if condition="in_array('表单列表',$menu_group)">
+			<li><a href="{:U('Selfform/index')}">表单列表</a></li>
+        </if>
+			<foreach name="leftnav['wyform']" item="one">
+				<li><a href="__GROUP__/Selfform/elsemodellist/navid/{$one.id}/id/{$one.id}">{$one.name}</a></li>
+			</foreach>
+		</ul>
+		</li>
+
+</if>
+
+<if condition="in_array('便民信息',$menu_group)">
+		<li class="submenu"> <a href="javascript:"><i class="icon icon-book"></i> <span>便民信息</span></a> 
+		<ul <eq name='Think.MODULE_NAME' value='Bianming'>style="display: block;"</eq>>
+        <if condition="in_array('便民列表',$menu_group)">
+			<li><a href="{:U('Bianming/index')}">便民列表</a></li>
+        </if>
+			<foreach name="leftnav['wybm']" item="one">
+				<li><a href="__GROUP__/Bianming/one_messagetype_list/navid/{$one.id}/id/{$one.id}">{$one.name}</a></li>
+			</foreach>
+		</ul>
+		</li>
+</if>
+
+
+<if condition="in_array('常用工具',$menu_group)">
+
+	<li class="submenu <eq name='Think.MODULE_NAME' value='Shops'></eq>"><a href="javascript:"><i class="icon icon-cog"></i> <span>常用工具</span></a>
+		<ul <eq name='Think.MODULE_NAME' value='Tools'>style="display: block;"</eq>>
+        <if condition="in_array('常用电话',$menu_group)">
+			<li><a href="{:U('Tools/commmontel')}">常用电话</a></li>
+		</if>
+        <if condition="in_array('微商城',$menu_group)">
+			<li><a href="{:U('Tools/mall')}">微商城</a></li>
+		</if>
+		</ul>
+		</li>
+</if>
+		<li> <a href="{:U('Public/logout')}"><i class="icon icon-info-sign"></i> <span>退出系统</span></a></li>
+
+
+
+	</ul>
+</div>
+<!--sidebar-menu-->
+{//:dump($menu_group)}

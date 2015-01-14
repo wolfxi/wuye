@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+	<!--breadcrumbs-->
+	<div id="content-header">
+		<h1>物业管理</h1>
+		<div id="breadcrumb">
+			<a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a>
+			<a href="javascript:" class="current">物业列表</a>
+			<foreach name="navbar" item="one">
+			<a  href="__URL__/one_messagetype_list/id/{$one.id}" class="current">{$one.name}</a>
+			</foreach>
+		</div>
+	</div>
+	<!--End-breadcrumbs-->
+	<!--Action boxes-->
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title">
+						<span class="icon"><i class="icon-th-list"></i></span>
+						<h5>修改物业费用分类</h5>
+					</div>
+					<div class="alert alert-error hide" id="alert_info">
+						<button type="button" class="close" onclick="$('#alert_info').hide();">×</button>
+						<div class="alert-body">
+							<span id="modal"></span>
+						</div>
+					</div>
+					<div class="widget-content nopadding">
+						<form action="__URL__/update_messagetype" method="post" class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label">物业费用分类名称 :</label>
+								<div class="controls">
+									<input type="text" class="span11" name="name" value="{$result.name}" placeholder="" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">收费项目 :</label>
+								<div class="controls">
+									<input type="text" class="span11" name="keyword" value="{$result.keyworks}" placeholder="" />多个,隔开
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">打印图片:</label>
+								<div class="controls">
+									<input type="text" name="image" id="image" value="{$result.image}"  class="span11" placeholder=""  />
+								</div>
+								<div class="controls">
+									<img class="img-rounded" id="uploadimg"  height="80px" width="160px" src="__APP__/{$result.image}"/>
+								</div>
+								<div class="controls">
+									<input type="file" name="choseimg" id="choseimg" onchange="ajaxuploadimage('choseimg','__URL__','__APP__')"/>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">上期读数名 :</label>
+								<div class="controls">
+									<input type="text" class="span3 inline" name="lastname" value="{$result.success_send_msg}" placeholder="" />
+									<input name="is_showlast" type="checkbox" class="checkbox inline" <if condition="$result.is_diapley eq 1">checked="checked" </if> /> 显示
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">本期读数名 :</label>
+								<div class="controls">
+									<input type="text" class="span3 inline" name="nowname" value="{$result.success_info}" placeholder="" />
+									<input name="is_shownow" type="checkbox" class="checkbox inline" <if condition="$result.is_bind eq 1"> checked="checked"</if> /> 显示
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">用量名 :</label>
+								<div class="controls">
+									<input type="text" class="span3" name="unitname" value="{$result.faile_info}" placeholder="" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">单价名 :</label>
+								<div class="controls">
+									<input type="text" class="span3" name="pricename" value="{$result.worder_openid}" placeholder="" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">总价名 :</label>
+								<div class="controls">
+									<input type="text" class="span3" name="countname" value="{$result.accept_openid}" placeholder="" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">附加内容 :</label>
+								<div class="controls">
+									<textarea class="span11" name="details" rows="5" >{$result.details_info}</textarea>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">备注 :</label>
+								<div class="controls">
+									<textarea class="span11" name="introduce" rows="5" >{$result.introduce}</textarea>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">设置:</label>
+								<div class="controls">
+									<label class="checkbox inline">
+										<input type="checkbox" value="1" name="status" <if condition="$result.is_status eq 1">checked="checked"</if> />
+										启用</label>
+									<label class=" checkbox inline">
+										<input type="checkbox" value="1" name="shortcut" <if condition="$result.is_shortcut eq 1">checked="checked"</if> />
+										快捷</label>
+									<label class="checkbox inline">
+										<input type="checkbox" value="1" name="stages" <if condition="$result.is_stages eq 1">checked="checked"</if> />
+										分期录入</label>
+									<label class=" checkbox inline">
+										<input type="checkbox" value="1" name="isall" <if condition="$result.is_anon eq 1">checked="checked"</if> />
+										是否全体物业缴费</label>
+								</div>
+							</div>
+							<div class="form-actions">
+									<input name="id" value="{$result.id}" type="hidden"/>
+									<button type="submit" class="btn btn-success">保存</button>
+									<a href="javascript:window.history.back();void(0);" class="btn">取消</a>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<!--end-main-container-part-->
+
+				<include file="Public:footer" />
+				{:FOOTERX()}
+		
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a1}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"><a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="javascript:" class="current">账户列表</a></div>
+  </div>
+<!--End-breadcrumbs-->
+
+<!--Action boxes-->
+  <div class="container-fluid">
+
+    <div class="row-fluid">
+        <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>代理商列表</h5>
+          <div class="buttons">
+            <a class="btn btn-mini" href="{:U('System/account_add')}"><i class="icon-plus"></i></a>
+          </div>
+        </div>
+        <div class="widget-content">
+        
+        
+          <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>登录账号</th>
+                  <th>状态</th>
+                  <th>电话</th>
+                  <th>邮箱</th>
+                  <th>真实姓名</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <volist name='result' id='vo'>
+                <tr>
+                  <td>{$vo.username}<a target="_blank" href="/{$vo.group}/public/login/autologin/{:md5($vo[username].$vo[password])}">  [登录] </a></td>
+
+                  <td><switch name="vo.status"><case value="1">正常</case><case value="0">锁定</case><case value="-1">删除</case><default />未知</switch></td>
+                  <td>{$vo.tel}</td>
+                  <td>{$vo.email}</td>
+                  <td>{$vo.nickname}</td>
+                  <td>
+                  <neq name='vo.status' value='-1'>
+                    <a class="btn btn-warning" href="{:U('System/auth',array('uid'=>$vo['uid']))}">
+                      <i class="icon-lock icon-white"></i> 权限
+                    </a>
+                  
+                    <a class="btn btn-info" href="{:U('System/account_edit',array('uid'=>$vo['uid']))}">
+                      <i class="icon-edit icon-white"></i> 编辑
+                    </a>
+                   </neq>
+                    
+                   <a class="btn btn-danger <neq name='vo.status' value='-1'>delete<else/>huifu</neq>" href="#static"  id="{$vo.uid}" data-toggle="modal" url="<neq name='vo.status' value='-1'>{:U('System/account_del')}<else/>{:U('System/account_huifu')}</neq>">
+                  <i class="icon-trash icon-white"></i>
+                  <neq name='vo.status' value='-1'>删除<else/>恢复</neq>
+                  </a>
+                  </td>
+                </tr>
+               
+                </volist>
+              </tbody>
+          </table>
+          
+          <div class="pagination alternate text-center"><ul>{$page}</ul></div>
+
+          <!--account serarch-->
+        <div class="alert alert-info">
+                <form class="form-inline" id="serach" method="post" action="{:U('System/account')}">
+                  登录账号
+                  <input type="text" style="width:100px" maxlength="40" size="35" value="{$_POST['account']}" name="account">
+                  真实姓名：
+                  <input type="text" style="width:100px" maxlength="40" size="35" value="{$_POST['nickname']}" name="nickname">
+                  <button class="btn" type="submit">搜索</button>
+                </form>
+              </div>
+<!--account serarchve-->
+
+
+
+
+
+
+
+
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--end-main-container-part-->
+
+<include file="Public:footer" />
+
+        
+        
+</body>
+<input name="del_value" type="hidden" id="del_value" value="0">
+<input name="url_value" type="hidden" id="url_value" value="{:U('System/account_del')}">
+</html>
+{:FOOTERX()}
+
+<script type="text/javascript">
+  //删除
+$('.delete').click(function(){
+  var id=$(this).attr('id');
+  var url=$(this).attr('url');
+  $('#del_value').val(id);
+  $('#url_value').val(url);
+  mmodal({content:'确定删除该代理商？',ok:1,closen:'取消'});
+});
+  //恢复
+$('.huifu').click(function(){
+  var id=$(this).attr('id');
+  var url=$(this).attr('url');
+  $('#del_value').val(id);
+  $('#url_value').val(url);
+  mmodal({content:'确定恢复该代理商？',ok:1,closen:'取消'});
+});
+$(document).on('click','#mmodal_ajax_ok', function (e) {
+  //$('#myModal').modal('hide');
+  var id = $('#del_value').val();
+  var url_value = $('#url_value').val();
+
+  $.post(url_value,{id:id},function(data){
+    if(data.status==1){
+      window.location.href="{:U('System/account')}";
+    }
+    mmodal({content:data.msg});
+  });
+})
+</script>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+<include file="Public:header" /> 
+
+<!--main-container-part-->
+<div id="content">
+  <div id="content-header">
+    <h1>微信管理</h1>
+  </div>
+  <div id="breadcrumb"> <a class="tip-bottom" href="{:U('Index/index')}" data-original-title=""> <i class="icon-home"></i> 首页 </a>  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th-list"></i> </span>
+            <h5>常用电话</h5>
+            <div class="buttons"> <a class="btn btn-mini" href="{:U('Tools/tel_add')}" title="添加常用电话"> <i class="icon-plus"></i> </a> </div>
+          </div>
+          <div class="widget-content">
+            <div class="invoice-content">
+              <div id="alert_info" class="alert alert-error hide">
+                <button class="close" onclick="$('#alert_info').hide();" type="button">×</button>
+                <div class="alert-body"> <span id="modal"></span> </div>
+              </div>
+              <div>
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>编号</th>
+                      <th>商家名称</th>
+                      <th>归属小区</th>
+                      <th>阅读量</th> 
+                      <th>状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th colspan="8"> <div class="dataTables_info" align="left">
+
+                         <input id="selectAll" class="btn" type="button" value="全选" >
+                       <input id="selectNone"  class="btn" type="button" value="反选" >
+                       <input id="cancel"  class="btn" type="button" value="取消" name="cancel">
+                        <a class="btn" href="#static_dels" onclick="deletes();"  id="deltet" data-toggle="modal">删除</a> </div>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th colspan="8"> <div class="pagination alternate">
+                          <ul>
+                            <li>{$page}</li>
+                          </ul>
+                        </div>
+                      </th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  <volist name="result" id="vo">
+                    <tr id="list_data_129">
+                      <td>
+                      <label>
+                          <input   id="dels_{$vo.id}" type="checkbox" value="{$vo.id}" name="dels[]" >
+                            {$vo.id}
+                        </label>
+                        </td>
+                      <td class="center">{$vo.name}<if condition="$vo.top_if eq 1">
+                  <span style="color: #FF0000">[顶]</span>
+                  </if></td>
+                      <td>
+
+                      <volist name="xiaoqu" id="vo1">
+                            <if condition="$vo1['id'] eq $vo['atid']">
+                              {$vo1.name}
+                            </if>
+                      </volist>
+                      </td>
+                       <td class="center">{$vo.number}</td> 
+                      <td class="center">
+                      <if condition="$vo.status eq 1 ">正常<else /> 禁用</if>
+                      </td>
+                      <td class="center"><a class="btn btn-info" href="{:U('Tools/tel_edit')}?id={$vo.id}"> <i class="icon-edit icon-white"></i> 编辑 </a> <a class="btn btn-danger" id="{$vo.id}" href="#static" data-toggle="modal"> <i class="icon-trash icon-white"></i> 删除 </a></td>
+                    </tr>
+                    </volist>
+                  </tbody>
+                </table>
+              </div>
+              <div class="alert alert-info">
+                <form class="form-inline" id="serach" method="post" action="{:U('Tools/Commmontel')}">
+                  商家名称
+                  <input type="text" style="width:100px" maxlength="40" size="35" value="{$_POST['account']}" name="account">
+                  小区名称
+                  <select id="xiaoquselect" class="selectpicker" style="width:150px" data-width="50px" name="xiaoquselect">
+                  <option value="-1">全部小区</option>
+                  <volist name="xiaoqu" id="one">
+                  <option value="{$one.id}">{$one.name}</option>
+                  </volist>
+                  </select>
+                  <button class="btn" type="submit">搜索</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+</div>
+<!--end-main-container-part--> 
+{:FOOTERX()}
+{:SELECT()}
+<include file="Public:footer" />
+<input name="del_value" type="hidden" id="del_value" value="0">
+
+<script>
+
+$('.btn-danger').click(function(){
+  var r=confirm("确定删除？");
+  if(r==true){
+     var id=$(this).attr('id');
+  $("#del_value").val(id);
+  var del_id=$("#del_value").val();
+  $.post("{:U('Tools/teldel')}",{id:del_id},function(data){
+    if(data.status==1){
+        window.location.reload();
+    }else{
+      alert("删除失败");
+    }
+  })
+  }
+ 
+})
+</script>
+
+
+<script type="text/javascript">
+   
+   function deletes(){
+    var del_ids="";
+    $("[name='dels[]']:checkbox").each(function(){
+      if ($(this).is(":checked")){
+        del_ids=del_ids+','+$(this).val();
+      }
+    }); 
+    del_ids=del_ids.replace(",","");
+
+    $.ajax({
+      type: 'POST',
+      url: "__URL__/delete_one_model/",
+      data:{id:del_ids},
+      dataType: "json",
+      success: function(data) {
+        if(data.status==1){
+            window.location.reload();
+        }
+        mmodal({content:data.msg});
+      }
+    });
+  
+  }
+
+
+</script>
+
+</body>
+</html>
+

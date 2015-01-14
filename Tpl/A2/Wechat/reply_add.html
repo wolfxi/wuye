@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+<include file="Public:header" /> 
+
+<!--main-container-part-->
+<div id="content">
+  <div id="content-header">
+    <h1>微信管理</h1>
+  </div>
+ <div id="breadcrumb"> <a class="tip-bottom" href="{:U('Index/index')}" data-original-title=""> <i class="icon-home"></i> 首页 </a> <a href="{:U('Wechat/config')}">微信设置</a> <a href="{:U('Wechat/keyreply')}">关键字回复设置</a> <a class="current" href="{:U('Wechat/tuwenreply')}">图文回复设置</a> <a href="{:U('Wechat/menu')}">自定义菜单</a> </div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box">
+        <div class="widget-title"><span class="icon"><i class="icon-th-list"></i></span>
+          <h5>添加 关键字回复</h5>
+        </div>
+        <div id="alert_info" class="alert alert-error hide">
+          <button onclick="$('#alert_info').hide();" class="close" type="button">×</button>
+          <div class="alert-body"><span id="modal"></span></div>
+        </div>
+        <div class="widget-content nopadding">
+          <form class="form-horizontal" action="{:U('Wechat/reply_add')}" method="post" id="act_form">
+            <div class="control-group">
+              <label for="appendedInput" class="control-label">规则名称：</label>
+              <div class="controls">
+                <input type="text" class="span11" value="" size="16" name="rule_name">
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="appendedInput" class="control-label">规则备注：</label>
+              <div class="controls">
+                <textarea class="span11"  name="rule_remark" style="height: 40px;"></textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="appendedInput" class="control-label">关键字：</label>
+              <div class="controls">
+                <textarea class="span11" name="key_words" style="height: 40px;"></textarea>
+                <span class="help-inline">一行一个关键字</span></div>
+            </div>
+            <div class="control-group">
+              <label for="appendedInput" class="control-label">匹配模式：</label>
+              <div class="controls">
+                <label class="radio">
+                      <input type="radio" value="0" name="match" style="opacity: 0;">
+                模糊匹配
+                </label>
+                <label class="radio">
+                      <input type="radio" value="1" name="match" style="opacity: 0;">
+                精确匹配
+                </label>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="appendedInput" class="control-label">是否启用：</label>
+              <div class="controls">
+                <label>
+                      <input type="checkbox" name="is_status" value="1" style="opacity: 0;">
+                启用
+                </label>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="appendedInput" class="control-label">回复类型：</label>
+              <div class="controls">
+                <label class="radio">
+                      <input type="radio" name="group" value="1" id="match_wenzi"  style="opacity: 0;">
+                文字
+                </label>
+                <label class="radio">
+                      <input type="radio"  name="group" value="2" id="match_tuping"  style="opacity: 0;">
+                图片
+                </label>
+              </div>
+            </div>
+            <div name="title_div" id="tp_title" class="control-group hide" style="display:none">
+              <label for="appendedInput" class="control-label">图片标题：</label>
+              <div class="controls">
+                <input type="text" class="span11" value="" size="16" name="image_title">
+              </div>
+            </div>
+            <div name="description_div" id="tp_des" class="control-group hide" style="display:none">
+              <label id="changetitle" for="appendedInput" class="control-label">图片说明：</label>
+              <div class="controls">
+                <textarea class="span11" name="image_description" style="height: 20px;"></textarea>
+              </div>
+            </div>
+
+
+
+            <div class="control-group" id="tp_jiany" style="display:none">
+                <label class="control-label">图片(建议640*320)：:</label>
+                <div class="controls">
+                  <input type="text" name="image" class="span11" id="image" value=""  class="span11" placeholder=""   />
+                </div>
+                <div class="controls">
+                  <img class="img-rounded" width="80px" height="160px"  id="uploadimg" src="__APP__/Public/admin/images/on_pic.jpg"/>
+                </div>
+                <div class="controls">
+                  <input type="file" id="choseimg" name="choseimg" onchange="ajaxuploadimage('choseimg','__URL__','__APP__');"/>
+                </div>
+            </div>
+
+
+
+
+            <div name="url2_div" id="tp_url"  class="control-group hide"  style="display:none">
+              <label for="appendedInput" class="control-label">链接地址：</label>
+              <div class="controls">
+                <input type="text" class="span11" value="" size="16" name="image_url">
+              </div>
+            </div>
+
+
+
+              <div class="control-group"  id="tp_con" style="display:none">
+              <label class="control-label">内容
+              </label>
+              <div class="controls">
+                <textarea id="details_info" name="reply_tucon"   rows="12" cols="80" style="width: 91%">
+                </textarea>
+              </div>
+            </div>
+
+
+
+
+            <div class="form-actions">
+              <button class="btn btn-primary" id="btn_submit" type="submit">提交</button>
+              &nbsp; <a class="btn" onclick="window.history.back();" href="javascript:">取消</a></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end-main-container-part--> 
+<include file="Public:footer" />
+</body>
+</html>
+{:FOOTERX()}
+<script type="text/javascript">
+  $("input[name='group']").click(function(){
+  var id= $(this).val();
+    if($(this).val()=='1'){
+
+      $("#tp_des").show();
+      $("#changetitle").text("回复内容：");
+      $("#tp_title").hide();
+      $("#tp_con").hide();
+      $("#tp_url").hide();
+      $("#tp_jiany").hide();
+  }else{
+
+      $("#tp_title").show();
+      $("#tp_con").show();
+      $("#tp_url").show();
+      $("#tp_jiany").show();
+      $("#tp_des").show();
+      $("#changetitle").text("图片说明：");
+  }
+});
+</script>
+<script type="text/javascript">
+    window.UEDITOR_HOME_URL='__APP__/Public/admin/js/ueditor/';
+    window.onload=function(){
+      window.UEDITOR_CONFIG.initialFrameWidth=810;//初始化编辑器宽度,默认1000
+         window.UEDITOR_CONFIG.initialFrameHeight=300;  //初始化编辑器高度,默认320
+         window.UEDITOR_CONFIG.elementPathEnabled =false;
+        UE.getEditor('details_info');
+    }
+  </script>
+<script>
+$('#act_form').submit(function(){
+  $(this).ajaxSubmit({
+    type: "post",
+    dataType: "json",
+    success: function(data){
+    if(data.status==1){
+      window.location.href="{:U('Wechat/keyreply')}";
+    }
+    mmodal({content:data.msg});
+    }
+  });
+  return false;
+});
+</script>
+

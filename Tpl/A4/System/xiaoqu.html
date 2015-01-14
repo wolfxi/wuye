@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"><a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="{:U('System/wuye')}">物业列表</a> <a href="{:U('System/xiaoqu',array('fid'=>$_GET['fid']))}">{$name}</a> <a href="javascript:" class="current">小区列表</a></div>
+  </div>
+<!--End-breadcrumbs-->
+
+<!--Action boxes-->
+  <div class="container-fluid">
+
+    <div class="row-fluid">
+                
+        <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>{$name}：小区列表</h5>
+          
+        </div>
+        <div class="widget-content">
+        
+        
+          <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>编号</th>
+                  <th>小区名称</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              
+              <tbody>
+              	<volist name='xiaoqu' id='vo'>
+                <tr>
+                  <td>{$vo.id}</td>
+                  <td>{$vo.name}</td>
+                  <td><eq name='vo.status' value='1'><span class="label label-success">正常</span><else/><span class="label">锁定</span></eq></td>
+                  <td>
+                  	<a class="btn btn-info" href="{:U('System/xiaoqu_add',array('id'=>$vo['id'],'fid'=>$vo['fid']))}">
+                    	<i class="icon-edit icon-white"></i> 编辑
+                    </a>
+                  </td>
+                </tr>
+                </volist>
+              </tbody>
+          </table>
+          
+          
+        </div>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</div>
+
+<!--end-main-container-part-->
+
+<include file="Public:footer" />
+
+        
+        
+</body>
+</html>
+{:FOOTERX()}
+<script>
+$('form').submit(function(){
+	$(this).ajaxSubmit({
+	  type: "post",
+	  dataType: "json",
+	  success: function(data){
+		$('#alert').html('<div class="alert"><button class="close" data-dismiss="alert">×</button>'+data.msg+'</div>');
+	  }
+	});
+	return false;
+});
+</script>

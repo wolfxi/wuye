@@ -1,0 +1,161 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+<include file="Public:header" />
+<div id="content">
+  <div id="content-header">
+    <h1>归属物业表单</h1>
+  </div>
+  <div id="breadcrumb"> <a class="tip-bottom" href="{:U('Index/index')}" data-original-title=""> <i class="icon-home"></i> 首页 </a> <a class="current" href="{:U('System/wuyeformmodiled')}">归属物业表单列表</a> </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          
+          <div class="widget-content">
+            <div class="invoice-content">
+              <div id="alert_info" class="alert alert-error hide">
+                <button class="close" onClick="$('#alert_info').hide();" type="button">×</button>
+                <div class="alert-body"> <span id="modal"></span> </div>
+              </div>
+              
+              <div>
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>编号</th>
+       
+                       <volist name="formresult" id="vo1">
+                        <th>{$vo1.name}</th>
+                      </volist>
+                      <th>状态</th>
+                      <th>创建时间</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th colspan="50"> <div class="dataTables_info" align="left">
+                          <input id="selectAll"  class="btn" type="button" value="全选" >
+                <input id="selectNone"  class="btn" type="button" value="反选" >
+                <input id="cancel"  class="btn" type="button" value="取消" name="cancel">
+                          <a class="btn" href="javascript:" onclick="deletes();" data-toggle="modal">删除</a> </div>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th colspan="8"> <div class="pagination alternate"></div>
+                      </th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+
+
+
+                    <volist name="result" id="vo">
+                      <tr id="list_data_9">
+                        <td>
+                          <label>
+                          <input type="checkbox" name="dels[]" id="dels[]" value="{$vo.id}" class="checkBoxSelect" />
+                            {$vo.id}
+                          </label>
+                        </td>
+
+                        <volist name="formresult" id="vo2">
+                          <td> 
+                            <php>
+                                echo $vo['form_content'][$vo2[id]];
+                            </php>
+                          </td>
+                        </volist>
+                        <td class="center">
+                           <switch name="vo.handle_status" >
+                          <case value="0" ><span class="label label-warning">未处理</span></case>
+                          <case value="1"><span class="label label-success">
+                          已处理</span>
+                                <switch name="vo.assess" >
+                                <case value="0" ><span class="label label-warning">未点评</span></case>
+                                <case value="1"><span class="label label-success">好评</span></case>
+                                <default /><span class="label label-important">差评</span>
+                                </switch>
+                          </case>
+                          <default /><span class="label label-important">处理中</span>
+                          </switch>
+                        </td>
+
+                        <td class="center">{$vo.post_time}</td>
+                        <td class="center"><a class="btn btn-info" href="{:U('System/elsemodeleditui')}?id={$vo.id}"> <i class="icon-edit icon-white"></i> 编辑 </a> <!-- <a class="btn btn-danger"  href="{:U('System/del_elsemodel')}?id={$vo.id}" data-toggle="modal"> <i class="icon-trash icon-white"></i> 删除 </a> --></td>
+                      </tr>
+                    </volist>
+                     <tr>
+                    <th class="center taskOptions" colspan="8">
+                    <div class="pagination alternate">
+                    <ul>
+                    <li>
+                    {$page} 
+                    </li>
+                    </ul>
+                    </div>
+                    </th>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+              <div class="alert alert-info">
+                <form class="form-inline" method="post" action="__URL__/wuyeformmodiled/id/{$id}">
+                <input type="hidden" value="{$aid}" name="aid">
+                  处理状态：
+                  <select id="type" class="selectpicker" data-width="100px" style="width:100px;"  name="type" >
+                    <option value="">全部状态</option>
+                    <option value="type1">已处理</option>
+                    <option value="type0">未处理</option>
+                    <option value="type2">处理中</option>                  
+                  </select>
+
+                  <button class="btn" type="submit">搜索</button>
+                </form>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+</div>
+<!--end-main-container-part--> 
+<include file="Public:footer" />
+{:FOOTERX()}
+{:SELECT()}
+<script type="text/javascript">
+function deletes(){
+    var del_ids="";
+    $("[name='dels[]']:checkbox").each(function(){
+      if ($(this).is(":checked")){
+        del_ids=del_ids+','+$(this).val();
+      }
+    }); 
+    del_ids=del_ids.replace(",","");
+
+    $.ajax({
+      type: 'POST',
+      url: "__URL__/delete_one_model/",
+      data:{id:del_ids},
+      dataType: "json",
+      success: function(data) {
+        alert(data.msg);
+        if(data.status==1){
+            window.location.reload();
+        }
+        
+      }
+    });
+  
+  }
+
+</script>
+</body>
+</html>

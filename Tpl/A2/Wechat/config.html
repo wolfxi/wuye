@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"><a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="javascript:" class="current">微信设置</a></div>
+  </div>
+<!--End-breadcrumbs-->
+
+<!--Action boxes-->
+  <div class="container-fluid">
+
+    <div class="row-fluid">
+        
+        <div class="alert alert-info">
+          <strong>您的微信API地址：</strong>{:C('Wurl')}Wechat/Index/index/wechat_id/{$wx.id}
+        </div>
+        <div id="alert"></div>
+        
+        
+        
+        <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>Wap前端显示设置</h5>
+        </div>
+        <div class="widget-content">
+          <form action="{$THINK.MODULE_NAME}{$THINK.ACTION_NAME}" method="post" class="form-inline">
+          <label>显示名称:</label>
+          <input name="wapname" type="text" class="input-large" id="wapname" placeholder="显示名称" value="{$wx.wapname}">
+          <button type="submit" class="btn btn-info">保存</button>
+        </form>
+        </div>
+      </div>
+      
+      
+      
+      
+        <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>微信账户 设置 (如果不需要获取关注用户信息，无需输入您的微信帐号和密码)</h5>
+        </div>
+        <div class="widget-content">
+              <form class="form-inline">
+              	<label>微信原始ID:</label>
+                <input name="wid" type="text" class="input-large" id="wid" placeholder="微信原始ID" value="{$wx.wid}">
+              	<label>微信TOKE值:</label>
+                <input name="wtoken" type="text" class="input-large" id="wtoken" placeholder="微信TOKE值" value="{$wx.wtoken}">
+              	<label>微信帐号:</label>
+                <input name="wuser" type="text" class="input-large" id="wuser" placeholder="微信帐号" value="{$wx.wuser}">
+              	<label>微信密码:</label>
+                <input name="wpassword" type="password" class="input-large" id="wpassword" placeholder="微信密码" value="{$wx.wpassword}">
+                <button type="submit" class="btn btn-info">保存</button>
+            </form>
+        </div>
+      </div>
+      
+      
+      
+      
+        <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>微信自定义菜单 设置</h5>
+        </div>
+        <div class="widget-content">
+              <form class="form-inline">
+              	<label>AppID(应用ID):</label>
+                <input name="wappid" type="text" class="input-large" id="wappid" placeholder="AppID(应用ID)" value="{$wx.wappid}">
+              	<label>AppSecret(应用密钥):</label>
+                <input name="wsecret" type="text" class="input-large" id="wsecret" placeholder="AppSecret(应用密钥)" value="{$wx.wsecret}">
+              	<label>高级认证:</label>
+                <input name="wcert" type="checkbox" id="wcert" value="1" <eq name='wx.wcert' value='1'>checked</eq>>
+                <input name="cert" type="hidden" id="cert" value="1">
+                <button type="submit" class="btn btn-info">保存</button>
+            </form>
+        </div>
+      </div>
+      
+      
+      
+      <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>微信 默认回复 设置 (设置的值为 模拟用户发送的关键字)</h5>
+        </div>
+        <div class="widget-content nopadding">
+          <form action="#" method="get" class="form-horizontal">
+            <div class="control-group">
+              <label class="control-label">用户关注回复:</label>
+              <div class="controls">
+                <input name="wsubscribe" type="text" class="span11" id="wsubscribe" value="{$wx.wsubscribe}"/>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">文字消息默认回复:</label>
+              <div class="controls">
+                <input name="wtext" type="text" class="span11" id="wtext" value="{$wx.wtext}" />
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">图片消息默认回复</label>
+              <div class="controls">
+                <input name="wimage" type="text"  class="span11" id="wimage" value="{$wx.wimage}" />
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">其他消息默认回复:</label>
+              <div class="controls">
+                <input name="wother" type="text" class="span11" id="wother" value="{$wx.wother}" />
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-info">保存</button>
+            </div>
+          </form>
+        </div>
+      </div>
+        
+      
+    </div>
+  </div>
+</div>
+
+<!--end-main-container-part-->
+
+<include file="Public:footer" />
+
+        
+        
+</body>
+</html>
+{:FOOTERX()}
+<script>
+$('form').submit(function(){
+	$(this).ajaxSubmit({
+	  type: "post",
+	  dataType: "json",
+	  success: function(data){
+		$('#alert').html('<div class="alert"><button class="close" data-dismiss="alert">×</button>'+data.msg+'</div>');
+	  }
+	});
+	return false;
+});
+</script>

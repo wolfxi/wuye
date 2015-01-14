@@ -1,0 +1,128 @@
+<!--Header-part-->
+<div id="header">
+	<h1><a href="dashboard.html">Matrix Admin</a></h1>
+</div>
+<!--close-Header-part--> 
+
+
+<!--top-Header-menu-->
+<div id="user-nav" class="navbar navbar-inverse">
+	<ul class="nav">
+		<li  class="dropdown" id="profile-messages" ><a title="" href="javascript:" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text"><php>echo $_SESSION[C('SysUserSessionName')];</php></span><b class="caret"></b></a>
+		<ul class="dropdown-menu">
+			<li><a href="{:U('Index/user_edit')}?id=<?php echo $_SESSION[C('SysUserSessionUid')]?>"><i class="icon-user"></i> 修改资料</a></li>
+			
+		</ul>
+		</li>
+        <li class=""><a title="" href="{:U('Proprety/msg')}"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">{$msg_count|default=0}</span></a></li>
+		<li class=""><a title="" href="{:U('Public/logout')}"><i class="icon icon-share-alt"></i> <span class="text">退出系统</span></a></li>
+	</ul>
+</div>
+
+<!--close-top-Header-menu-->
+
+
+<!--sidebar-menu-->
+<div id="sidebar"><a href="javascript:" class="visible-phone"><i class="icon icon-align-justify"></i> 菜单</a>
+	<ul>
+
+
+		<li class="<eq name='Think.MODULE_NAME' value='Index'>active</eq>"><a href="{:U('Index/index')}"><i class="icon icon-home"></i> <span>系统首页</span></a></li>
+<!--
+		<li class="submenu <eq name='Think.MODULE_NAME' value='Shops'>active</eq>"><a href="javascript:"><i class="icon icon-cog"></i> <span>系统管理</span></a>
+		<ul <eq name='Think.MODULE_NAME' value='System'>style="display: block;"</eq>>
+			<li <if condition="is_int(strpos(ACTION_NAME,'account'))">style="font-weight:bold;color:#fff;"</if>><a href="{:U('System/account')}">账户列表</a></li>
+			<li <if condition="is_int(strpos(ACTION_NAME,'wuye')) or is_int(strpos(ACTION_NAME,'xiaoqu'))">style="font-weight:bold"</if>><a href="{:U('System/wuye')}">物业列表</a></li>
+			<li <if condition="is_int(strpos(ACTION_NAME,'wuyeselform'))">style="font-weight:bold;color:#fff;"</if>><a href="{:U('System/wuyeselform')}">归属物业表单列表</a></li>
+		</ul>
+		</li>
+-->
+<if condition="in_array('广告信息管理',$menu_group)">
+		<li class="submenu"> <a href="javascript:"><i class="icon icon-shopping-cart"></i> <span>广告信息管理</span></a> 
+		<ul <eq name='Think.MODULE_NAME' value='Wyads'>style="display: block;"</eq>>
+		<if condition="in_array('广告信息分类',$menu_group)">
+			<li><a href="{:U('Wyads/index')}">广告信息分类</a></li>
+		</if>
+			<foreach name="leftnav['wyads']" item="one">
+
+				<li <if condition="$navid eq $one['id']">style="font-weight:bold;color:#fff;"</if>>
+				<a href="__GROUP__/Wyads/one_messagetype_list/id/{$one.id}/navid/{$one.id}"  >{$one.name}</a></li>
+			</foreach>
+		</ul>
+		</li>
+</if>
+<if condition="in_array('信息发布管理',$menu_group)">
+		<li class="submenu"> <a href="javascript:"><i class="icon icon-shopping-cart"></i> <span>信息发布管理</span></a> 
+		<ul <eq name='Think.MODULE_NAME' value='Wyinfo'>style="display: block;"</eq>>
+		<if condition="in_array('信息分类列表',$menu_group)">
+			<li><a href="{:U('Wyinfo/index')}">信息分类列表</a></li>
+		</if>
+			<foreach name="leftnav['wyinfo']" item="one">
+				<li <if condition="$navid eq $one['id']">style="font-weight:bold;color:#fff;"</if>><a href="__GROUP__/Wyinfo/one_messagetype_list/id/{$one.id}/navid/{$one.id}"  >{$one.name}</a></li>
+			</foreach>
+		</ul>
+		</li>
+</if>
+<if condition="in_array('物业表单管理',$menu_group)">
+		<li class="submenu"> <a href="javascript:"><i class="icon icon-user"></i> <span>物业表单管理</span></a> 
+		<ul <eq name='Think.MODULE_NAME' value='Selfform'>style="display: block;"</eq>>
+		<if condition="in_array('表单列表',$menu_group)">
+			<li><a href="{:U('Selfform/index')}" >表单列表</a></li>
+		</if>
+			<foreach name="leftnav['wyform']" item="one">
+				<li <if condition="$navid eq $one['id']">style="font-weight:bold ;color:#fff;"</if>><a href="__GROUP__/Selfform/elsemodellist/id/{$one.id}/navid/{$one.id}" >{$one.name}</a></li>
+			</foreach>
+		</ul>
+		</li>
+</if>
+<if condition="in_array('社区交友',$menu_group)">
+	<if condition="in_array('社区交友板块列表',$menu_group)">
+		<li class="submenu"> <a href="javascript:"><i class="icon icon-fire"></i> <span>社区交友</span></a>
+</if>
+		<ul <eq name='Think.MODULE_NAME' value='Bbs'>style="display: block;"</eq>>
+				<li><a href="{:U('Bbs/index')}"  >社区交友</a></li>
+
+			<foreach name="leftnav['wybbs']" item="one">
+				<li <if condition="$navid eq $one['id']">style="font-weight:bold;color:#fff;"</if>>
+					<a href="__GROUP__/Bbs/one_messagetype_list/id/{$one.id}/navid/{$one.id}"  >{$one.name}</a>
+				</li>
+			</foreach>
+		</ul>
+		</li>
+</if>
+<if condition="in_array('物业管理',$menu_group)">
+		<li  class="submenu"> <a href="javascript:"><i class="icon icon-fire"></i> <span>物业管理</span></a> 
+		<ul <switch name="Think.MODULE_NAME" ><case value="Proprety" >style="display: block;"</case>
+<case value="Wypay">style="display: block;"</case></switch>>
+		<if condition="in_array('物业列表',$menu_group)">
+			<li><a href="{:U('Proprety/index')}">物业列表</a></li>
+		</if>
+		<if condition="in_array('费用查询',$menu_group)">
+			<li><a href="{:U('Proprety/models')}">费用查询</a></li>
+		</if>
+		<if condition="in_array('物业在线收费',$menu_group)">
+			<li><a href="{:U('Wypay/index')}">物业在线收费</a></li>
+		</if>
+		<if condition="in_array('物业费用分类',$menu_group)">
+			<li><a href="{:U('Wypay/wy_type')}">物业费用分类</a></li>
+		</if>
+		<if condition="in_array('物业关注用户',$menu_group)">
+			<li><a href="{:U('Proprety/user')}">物业关注用户</a></li>
+		</if>
+		<if condition="in_array('物业用户绑定',$menu_group)">
+			<li><a href="{:U('Proprety/user_binding')}">物业用户绑定</a></li>
+		</if>
+		<if condition="in_array('消息管理',$menu_group)">
+			<li><a href="{:U('Proprety/msg')}">消息管理</a></li>
+		</if>
+		</ul>
+		</li>
+</if>
+
+		<li> <a href="{:U('Public/logout')}"><i class="icon icon-info-sign"></i> <span>退出系统</span></a></li>
+
+
+
+	</ul>
+</div>
+<!--sidebar-menu-->

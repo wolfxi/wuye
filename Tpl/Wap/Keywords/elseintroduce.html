@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+
+
+<div class="container">
+
+	<div class="row">
+		<div class="center-block col-md-12">
+			<h4>{$result.title}</h4>
+			<hr/>
+			<span>{$result.post_time} &nbsp;&nbsp;&nbsp;阅读量:{$result.click_num}</span>
+		</div>
+	</div>
+	<br/>
+	<div class="row">
+		<div class="center-block col-md-12">
+			<p>
+				{$result.details|stripcslashes}
+				
+			</p>
+			<br/><br/>
+		</div>
+	</div>
+
+
+</div>
+
+
+</body>
+</html>
+{:FOOTERX_WAP()}
+

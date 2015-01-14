@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+<nav style="background:#A2CD5A;" class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div style="font-size: 14px;line-height: 40px;height: 40px;text-align: center;">
+	<a href="javascript:history.back();">
+	<span style="padding-left: 8px;color:whtite;float: left; font-size:16">返回</span>
+	</a>
+	<span style="font-size: 18px;color:whtite;">{$aresult['name']}</span>
+ </div>
+</nav>
+<body>
+<div class="container">
+		<br/>
+		<br/><br/>
+			<div class="row">
+			<div class=" col-md-12">
+				<h3 ><span class="glyphicon glyphicon-user">&nbsp;</span></a>{$mresult.title}
+					<if condition="$mresult.is_top eq 1">
+					<span style="color: #FF0000;font-size:12px;">[顶]</span>
+					</if>
+				</h3>
+
+				<hr/>
+				<span>发布时间:<span style="color:#7B68EE;">{$mresult.post_time}</span> &nbsp;&nbsp;&nbsp;
+					<if condition="$mresult['is_diaplay_click'] eq 1">
+						阅读量:{$mresult.click_num}
+					</if>
+				</span>
+				<span class="pull-right">
+					<span id="praise">{$mresult.praise}</span>
+					<i class="glyphicon glyphicon-thumbs-up"  onclick="click_praise();"></i>
+				</span>
+			</div>
+		</div>
+		<br/>
+		<span style="color:#7B68EE; font-size:16px;"><li class="glyphicon glyphicon-folder-close"></li>{$aresult['name']}描述:</span>
+		<br/><br/>
+
+		<if condition="$mresult['is_user_post'] eq 0">
+			<div class="row">
+				<div class="center-block col-md-12">
+					<p>
+						{$mresult.details|stripcslashes}
+						
+					</p>
+					<br/><br/>
+				</div>
+			</div>
+		<else/>
+
+			<volist name="fresult" id="vo">
+	            <switch name="vo.type" >
+	            <case value="1" ><!--但文本框-->
+	                <div class="form-group">
+	                <label  for="appendedInput">{$vo.name}:</label>
+	                	<span><php>echo $mresult['form_content'][$vo['id']];</php></span>
+	                    <!--<input class="form-control" type="text" value="<php>echo $mresult['form_content'][$vo['id']];</php>" name="model[{$vo.id}]" placeholder="{$vo.defaultvalue}" disabled>-->
+	                </div>
+	            </case>
+	            <case value="2"><!--多文本框-->
+	                <div class="form-group">
+	                <label  for="appendedInput">{$vo.name}:</label>
+	                <span><php>echo $mresult['form_content'][$vo['id']];</php></span>
+	                
+	              
+	                </div>
+	            </case>
+	            <case value="3"><!--下拉框-->
+	                    <div class="form-group">
+	                    <notempty name="vo.options">
+	                    <label  for="appendedInput">{$vo.name}</label>
+	              
+	                    
+	                     <foreach name="vo.options" key="key" item="one">
+	                        <if condition="$mresult['form_contetn'][$vo['id']] eq $one"><span>{$one}</span></if> 
+	                            
+	                       
+	                   </foreach>
+	                 
+	                   
+	                    </notempty>
+	                    </div>
+	            </case>
+	            <case value="4"><!--单选框-->
+	                    <div class="form-group">
+	                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+	                    
+	                    <foreach name="vo.options" key="radio" item="radioo">
+	                    <if condition="$mresult['form_contetn'][$vo['id']] eq $one"><span>{$radioo}</span></if> 
+	                    </foreach>
+	                    
+	                    </div>
+	            </case>
+	            <case value="5"><!--多选框-->
+	                    <div class="form-group">
+	                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+	                   
+	                    <foreach name="vo.options" key="chec" item="check">
+	                    <if condition="$mresult['form_contetn'][$vo['id']] eq $check">{$check}&nbsp;&nbsp;</if> 
+	                    </foreach>
+	                   
+	                    </div>
+	            </case>
+	            <default /><!--上传按钮      -->
+	                    <div class="form-group">
+	                    <label class="control-label" for="appendedInput">{$vo.name}</label>
+	                    
+	                   
+	                    <img src="__APP__/<php>echo $mresult['form_content'][$vo['id']];</php>" height="80px" width="160px;"/>
+	                   
+	                    </div>
+	            </switch>
+	       </volist>
+
+
+		</if>
+
+		<!--回复列表-->
+		<foreach name="replay" item="one">
+			<hr/>
+			<div class="row">
+				<span>{$one.name} &nbsp;&nbsp;&nbsp;&nbsp;{$one.time}</span>
+			</div>
+			<div class="row">
+				<span>回复内容:{$one.replay_info}</span>
+			</div>
+
+		</foreach>
+		<nav>
+	      <ul class="pagination">
+	        {$page}
+	      </ul>
+	    </nav>
+	    <div class="row">
+			<div class="center-block col-md-12">
+		
+				<form role="form" method="post" action="__URL__/replayone/">
+				  <div class="form-group">
+				   <!-- 	<label class="control-label" for="appendedInput"><li class="glyphicon glyphicon-envelope"></li>发表回复:</label> -->
+				   <span style="color:#7B68EE; font-size:16px;"><li class="glyphicon glyphicon-folder-close"></li>发表回复:</span><br/>
+				    <textarea class="form-control" row="4" name="content"></textarea>
+				    <br/>
+				    <input name="id" type="hidden" value="{$mresult.id}"/>
+				   <button style="background:#A2CD5A;" type="submit" class="btn btn-default center-block col-md-12 col-xs-12">回复</button>
+				  </div>
+				 
+				</form>
+			</div>
+		</div>
+		<br/>
+</div>
+
+
+</body>
+</html>
+{:FOOTERX_WAP()}
+<script type="text/javascript">
+$('form').submit(function(){
+  $(this).ajaxSubmit({
+    type: "post",
+    dataType: "json",
+    success: function(data){
+		if(data.flag==1){
+            window.location.href="__URL__/bianmingone/id/{$_GET['id']}";
+        }else{
+            mmodal({content:'<span>'+data.msg+'</span>'});
+        }
+    }
+  });
+  return false;
+});
+
+function click_praise(){
+	$.post("__URL__/praise/id/{$mresult.id}",function(data){
+		if(data.flag==1){
+			var praisenum=parseInt("10",$("#praise").text());
+			$("#praise").text(praisenum+1);
+			return false;
+		}else{
+			return false;
+		}
+	});	
+}
+
+
+function mmodal(param){
+var html='<div class="modal fade" id="';
+    if(param.id){html+=param.id;}else{html+='myModal';}
+    html+='" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content">';
+            if(param.header){
+            html+='<div class="modal-header"><h4 class="modal-title" id="myModalLabel">';
+                    html+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+                    html+=param.header;
+                    html+='</h4></div>';
+            }
+            if(param.content){html+='<div class="modal-body">';html+=param.content;html+='</div>';}
+            if(param.close!=0 || param.ok==1){
+            html+='<div class="modal-footer">'
+                if(param.close!=0){
+                html+='<button type="button" class="btn" data-dismiss="modal">';
+                    if(param.closen){html+=param.closen;}else{html+='确定';}
+                    html+='</button>';
+                }
+                if(param.ok==1){
+                html+='<button type="button" class="btn btn-success" id="mmodal_ajax_ok">';
+                    if(param.okn){html+=param.okn;}else{html+='确定';}
+                    html+='</button>';
+                }
+                html+='</div>';
+            }
+            html+='</div></div></div>';
+$(html).modal();
+}
+</script>

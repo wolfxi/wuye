@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+
+
+
+<div class="container">
+
+    <div class="page-header">
+      <h3>绑定房号<small>请输入物业认证码</small></h3>
+    </div>
+
+	<div class="row">
+
+		<div class="center-block col-md-12">
+
+
+				<form role="form" method="post" action="__URL__/wuye_bind_save">
+				  <div class="form-group">
+				  	<label><span style="color:red;"><small>{$result.introduce}</small></span></label>
+				    <input type="text" name="auth" class="form-control" id="auth" placeholder="请输入物业认证码">
+				  </div>
+				   <button type="submit" class="btn btn-default center-block col-md-12 col-xs-12">提交绑定</button>
+				  </div>
+				 
+				</form>
+
+
+		</div>
+
+		
+
+	</div>
+
+
+
+
+
+
+</body>
+</html>
+{:FOOTERX_WAP()}
+<script type="text/javascript">
+$('form').submit(function(){
+		$(this).ajaxSubmit({
+			type: "post",
+			dataType: "json",
+			success: function(data){
+				alert(data.msg);
+				if(data.status==1){
+					$('body').html('<div style="color:#F90; font-size:20px; text-align: center;">您已成功绑定房号,请您按返回键返回到平台主界面查看下方各个菜单内容，谢谢您的关注！</div>');
+				}
+			}
+			});
+		return false;
+		})
+
+
+function mmodal(param){
+	var html='<div class="modal fade" id="';
+	if(param.id){html+=param.id;}else{html+='myModal';}
+	html+='" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content">';
+	if(param.header){
+		html+='<div class="modal-header"><h4 class="modal-title" id="myModalLabel">';
+		html+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+		html+=param.header;
+		html+='</h4></div>';
+	}
+	if(param.content){html+='<div class="modal-body">';html+=param.content;html+='</div>';}
+	if(param.close!=0 || param.ok==1){
+		html+='<div class="modal-footer">'
+			if(param.close!=0){
+				html+='<button type="button" class="btn" data-dismiss="modal">';
+				if(param.closen){html+=param.closen;}else{html+='确定';}
+				html+='</button>';
+			}
+		if(param.ok==1){
+			html+='<button type="button" class="btn btn-success" id="mmodal_ajax_ok">';
+			if(param.okn){html+=param.okn;}else{html+='确定';}
+			html+='</button>';
+		}
+		html+='</div>';
+	}
+	html+='</div></div></div>';
+	$(html).modal();
+}
+
+
+
+</script>

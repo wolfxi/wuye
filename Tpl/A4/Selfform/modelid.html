@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+<!--sidebar-menu-->
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb">
+        <a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+        <a href="{:U('Selfform/index')}?navid={$navid}" <if condition="$navid eq $forumlist['WY_FORM']" >class="current"</if>>物业表单</a>
+        <foreach name="leftnav['wyform']" item="one">
+          <a href="__GROUP__/Selfform/elsemodellist/navid/{$one.id}/id/{$one.id}" <if condition="$navid eq $one['id']" >class="active"</if>>{$one.name}</a>
+        </foreach>
+
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>微信表单列表</h5>
+            <div class="buttons">
+            <a title="新建选项" class="btn btn-mini" href="{:U('Selfform/add_new_model_ui')}?navid={$navid}"><i class="icon-plus"></i></a>
+          </div>
+          </div>
+          <div class="widget-content ">
+            <table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>
+                  <th style="width:65px;">编号</th>
+                  <th>选项名</th>
+                  <th>选项</th>
+                  <th>备注</th>
+                  <th style="width:400px;" class="center taskOptions">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              <volist name="result" id="vo">
+                <tr>
+                  <td>{$vo.id}</td>
+                  <td>
+                  {$vo.name}
+                  <switch name="vo.is_must" >
+                  <case value="1" >*</case>
+                  <default />
+                  </switch>
+
+                  </td>
+                  <td>
+                  <switch name="vo.type" >
+                  <case value="1" >单行文本/
+                      <switch name="vo.selectpicker" >
+                      <case value="0" >不做限制</case>
+                      <case value="1">邮件格式</case>
+                      <case value="2">手机号码</case>
+                      <case value="3">网址格式</case>
+                      <case value="4">QQ号码</case>
+                      <case value="5">字母格式</case>
+                      <case value="6">数字格式</case>
+                      <default />邮政编码
+                      </switch>
+                  </case>
+                  <case value="2">多行文本/
+                      <switch name="vo.selectpicker" >
+                      <case value="0" >不做限制</case>
+                      <case value="1">邮件格式</case>
+                      <case value="2">手机号码</case>
+                      <case value="3">网址格式</case>
+                      <case value="4">QQ号码</case>
+                      <case value="5">字母格式</case>
+                      <case value="6">数字格式</case>
+                      <default />邮政编码
+                      </switch>
+                  </case>
+                  <case value="3">下拉框/
+                      <switch name="vo.selectpicker" >
+                      <case value="0" >不做限制</case>
+                      <case value="1">邮件格式</case>
+                      <case value="2">手机号码</case>
+                      <case value="3">网址格式</case>
+                      <case value="4">QQ号码</case>
+                      <case value="5">字母格式</case>
+                      <case value="6">数字格式</case>
+                      <default />邮政编码
+                      </switch>
+                  </case>
+                  <case value="4">单选框/
+                      <switch name="vo.selectpicker" >
+                      <case value="0" >不做限制</case>
+                      <case value="1">邮件格式</case>
+                      <case value="2">手机号码</case>
+                      <case value="3">网址格式</case>
+                      <case value="4">QQ号码</case>
+                      <case value="5">字母格式</case>
+                      <case value="6">数字格式</case>
+                      <default />邮政编码
+                      </switch>
+                  </case>
+                  <case value="5">多选框/
+                      <switch name="vo.selectpicker" >
+                      <case value="0" >不做限制</case>
+                      <case value="1">邮件格式</case>
+                      <case value="2">手机号码</case>
+                      <case value="3">网址格式</case>
+                      <case value="4">QQ号码</case>
+                      <case value="5">字母格式</case>
+                      <case value="6">数字格式</case>
+                      <default />邮政编码</switch>
+                  </case>
+                  <case value="6">密码框/
+                      <switch name="vo.selectpicker" >
+                      <case value="0" >不做限制</case>
+                      <case value="1">邮件格式</case>
+                      <case value="2">手机号码</case>
+                      <case value="3">网址格式</case>
+                      <case value="4">QQ号码</case>
+                      <case value="5">字母格式</case>
+                      <case value="6">数字格式</case>
+                      <default />邮政编码</switch>
+                  </case>
+                  <case value="7">隐藏域/
+                      <switch name="vo.selectpicker" >
+                      <case value="0" >不做限制</case>
+                      <case value="1">邮件格式</case>
+                      <case value="2">手机号码</case>
+                      <case value="3">网址格式</case>
+                      <case value="4">QQ号码</case>
+                      <case value="5">字母格式</case>
+                      <case value="6">数字格式</case>
+                      <default />邮政编码</switch>
+                  </case>
+                  <default />上传按钮/
+                      <switch name="vo.selectpicker" >
+                      <case value="0" >不做限制</case>
+                      <case value="1">邮件格式</case>
+                      <case value="2">手机号码</case>
+                      <case value="3">网址格式</case>
+                      <case value="4">QQ号码</case>
+                      <case value="5">字母格式</case>
+                      <case value="6">数字格式</case>
+                      <default />邮政编码</switch>
+                  </switch>
+                  </td>
+                  <td>{$vo.introduce}</td>
+                  <td class="center taskOptions">
+                  <a class="btn btn-success" onClick="move('__URL__/move_form/aid/{$vo.aid}','UP','{$vo.id}');"><i class="icon-arrow-up"></i>上移</a>
+                <a class="btn btn-success"  onClick="move('__URL__/move_form/aid/{$vo.aid}','DOWN','{$vo.id}');"><i class="icon-arrow-down"></i>下移</a>
+                  <a class="btn btn-info" href="{:U('Selfform/edit_model')}?id={$vo.id}">
+                  <i class="icon-edit icon-white"></i>
+                  编辑
+                  </a>
+                   <a class="btn btn-danger" href="#static"  id="{$vo.id}" data-toggle="modal">
+                  <i class="icon-trash icon-white"></i>
+                  删除
+                  </a>
+                  </td>
+                </tr>
+              </volist>
+
+
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end-main-container-part-->
+
+<include file="Public:footer" />
+<input name="del_value" type="hidden" id="del_value" value="0">
+{:FOOTERX()}
+<script type="text/javascript">
+  //删除
+$('.btn-danger').click(function(){
+  var id=$(this).attr('id');
+  $('#del_value').val(id);
+  mmodal({content:'确认删除该菜单',ok:1,closen:'取消'});
+});
+$(document).on('click','#mmodal_ajax_ok', function (e) {
+  //$('#myModal').modal('hide');
+  var id = $('#del_value').val();
+  $.post("{:U('Selfform/del_model')}",{id:id},function(data){
+    if(data.status==1){
+      window.location.href="{:U('Selfform/index')}";
+    }
+    mmodal({content:data.msg});
+  });
+})
+</script>
+
+</body>
+</html>

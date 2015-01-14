@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+
+<div class="container">
+
+
+<ul class="list-group">
+ <volist name="result" id="vo">
+  <li class="list-group-item">{$vo.name}</li>
+  </volist>
+
+</ul>
+
+</div>
+</body>
+</html>
+{:FOOTERX_WAP()}

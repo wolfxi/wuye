@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<div id="content">
+ <div id="content-header">
+    <div id="breadcrumb">
+        <a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+        <a href="{:U('Tools/commmontel')}" >常用电话</a>
+        <a href="{:U('Tools/mall')}" >口袋通商城</a>
+    </div>
+  </div>
+<div class="container-fluid">
+  <hr>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>口袋通商城</h5>
+        </div>
+        <div class="widget-content nopadding">
+
+
+
+          <form action="{:U('Tools/mall_add')}" method="post" class="form-horizontal">
+
+            <div class="control-group">
+              <label class="control-label">名称 </label>
+              <div class="controls">
+                <input id="name" name="name" type="text" class="span11"  />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">排序 </label>
+              <div class="controls">
+                <input id="tel" name="tel" type="text" class="span11"  />
+              </div>
+            </div>
+
+         <!--    <div class="control-group">
+           <label class="control-label" for="appendedInput">所属小区</label>
+           <div class="controls">
+             <select id="atid" name="atid" class="selectpicker" data-width="150px">
+             <volist name="result" id="vo">
+               <option value="{$vo.id}">{$vo.name}</option>
+             </volist>
+             </select>
+           </div>
+         </div> -->
+
+       
+                <input id="type" type="hidden" name="type" class="span11" value="2"  />
+  
+            
+            <div class="control-group">
+              <label class="control-label">链接 </label>
+              <div class="controls">
+                <input id="url" name="url" type="text" class="span11"  />
+              </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">图片</label>
+                <div class="controls">
+                  <input type="text" name="image" id="image"  class="span11" placeholder=""  />
+                </div>
+                <div class="controls">
+                  <img class="img-rounded" width="160px;" height="80px" id="uploadimg" src="__APP__/Public/admin/images/on_pic.jpg"/>
+                </div>
+                <div class="controls">
+                  <input type="file" id="choseimg" name="choseimg" onchange="ajaxuploadimage('choseimg','__URL__','__APP__');"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">详细内容
+              </label>
+              <div class="controls">
+                <textarea id="details_info" name="details_info"  rows="12" cols="80" style="width: 91%">
+                </textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">设置：</label>
+              <div class="controls">
+			  	      <label class="checkbox inline">是否启用
+                	<input name="status" type="checkbox" value="1" id="status">
+				        </label>
+			  	      <label class="checkbox inline">置顶
+                	<input name="top_if" value="1" type="checkbox" id="top_if">
+				      </label>
+
+              </div>
+            </div>
+            <div class="controls">
+              <button type="submit" class="btn btn-success">保存</button>
+              <button type="reset" class="btn btn-success">取消</button>
+            </div>
+          </form>
+
+
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<!--end-main-container-part-->
+<include file="Public:footer" />
+{:FOOTERX()}
+ <script type="text/javascript">
+    window.UEDITOR_HOME_URL='__APP__/Public/admin/js/ueditor/';
+    window.onload=function(){
+      window.UEDITOR_CONFIG.initialFrameWidth=810;//初始化编辑器宽度,默认1000
+         window.UEDITOR_CONFIG.initialFrameHeight=350;  //初始化编辑器高度,默认320
+         window.UEDITOR_CONFIG.elementPathEnabled =false;
+        UE.getEditor('details_info');
+    }
+  </script>
+<script type="text/javascript">
+$('form').submit(function(){
+  $(this).ajaxSubmit({
+    type: "post",
+    dataType: "json",
+    success: function(data){
+    if(data.status==1){
+      window.location.href="{:U('Tools/mall')}";
+    }
+    mmodal({content:data.msg});
+    }
+  });
+  return false;
+});
+</script>
+
+</body>
+</html>

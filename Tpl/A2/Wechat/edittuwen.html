@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+<include file="Public:header" /> 
+
+<!--main-container-part-->
+<div id="content">
+	<div id="content-header">
+		<h1>微信管理</h1>
+	</div>
+	<div id="breadcrumb"> <a class="tip-bottom" href="{:U('Index/index')}" data-original-title=""> <i class="icon-home"></i> 首页 </a> <a href="{:U('Wechat/config')}">微信设置</a> <a href="{:U('Wechat/keyreply')}">关键字回复设置</a> <a class="current" href="{:U('Wechat/tuwenreply')}">图文回复设置</a> <a href="{:U('Wechat/menu')}">自定义菜单</a> </div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title"><span class="icon"><i class="icon-th-list"></i></span>
+						<h5>添加 图文回复</h5>
+					</div>
+					<div id="alert_info" class="alert alert-error hide">
+						<button onclick="$('#alert_info').hide();" class="close" type="button">×</button>
+						<div class="alert-body"><span id="modal"></span></div>
+					</div>
+					<div class="widget-content nopadding">
+						<form method="post" action="__URL__/update_tuwen" class="form-horizontal ui-formwizard" id="act_form" novalidate="novalidate">
+							<div class="step ui-formwizard-content" id="form-wizard-1" style="display: block;">
+								<div class="control-group">
+									<label for="appendedInput" class="control-label">规则名称：</label>
+									<div class="controls">
+										<input type="text"  size="16" name="name" value="{$result.rule_name}" class="span11">
+									</div>
+								</div>
+								<div class="control-group">
+									<label for="appendedInput" class="control-label">规则备注：</label>
+									<div class="controls">
+										<textarea class="span11" rows="5" name="remark"  >{$result.rule_remark}</textarea>
+									</div>
+								</div>
+								<div class="control-group">
+									<label for="appendedInput" class="control-label">关键字：</label>
+									<div class="controls">
+										<textarea class="span11" rows="5"  name="keyword" >{$result.key_words}</textarea>
+										<span class="help-inline">一行一个关键字</span></div>
+								</div>
+								<div class="control-group">
+									<label for="appendedInput" class="control-label">匹配模式：</label>
+									<div class="controls">
+										<label class="radio">
+											<div class="radio" id="uniform-undefined"><span>
+													<div class="radio" id="uniform-undefined"><span>
+															<div class="radio" id="uniform-undefined"><span>
+																	<input type="radio" value="0" name="pipei" <if condition="$result['match'] eq 0">checked="checked"</if> style="opacity: 0;" class="ui-wizard-content">
+															</span></div>
+													</span></div>
+											</span></div>
+											模糊匹配
+										</label>
+										<label class="radio">
+											<div class="radio" id="uniform-undefined"><span>
+													<div class="radio" id="uniform-undefined"><span>
+															<div class="radio" id="uniform-undefined"><span>
+																	<input type="radio" value="1" name="pipei"  <if condition="$result['match'] eq 1">checked="checked"</if>style="opacity: 0;" class="ui-wizard-content">
+															</span></div>
+													</span></div>
+											</span></div>
+											精确匹配
+										</label>
+									</div>
+								</div>
+								<div class="control-group">
+									<label for="appendedInput" class="control-label">是否启用：</label>
+									<div class="controls">
+										<input type="checkbox" <if condition="$result['is_status'] eq 1">checked="checked"</if> value="1" name="status" style="opacity: 0;" class="ui-wizard-content">
+									</div>
+								</div>
+							</div>
+						<div class="form-actions">
+							<input type="hidden" value="{$result.id}" name="id"/>
+							<input type="reset" value="上一步" class="btn btn-primary ui-wizard-content ui-formwizard-button" id="back" disabled="disabled">
+							<input type="submit" value="下一步" class="btn btn-primary " >
+							<a class="btn" href="javascript:window.location.back();">取消</a>
+							<div id="status"></div>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>
+<!--end-main-container-part--> 
+<include file="Public:footer" />
+{:FOOTERX()}
+<script type="text/javascript">
+
+$('form').submit(function(){
+		$(this).ajaxSubmit({
+				type: "post",
+				dataType: "json",
+				success: function(data){
+					if(data.flag==1){
+						window.location.href="__URL__/edit_tuwennext/id/"+data.msg;
+					}else{
+						mmodal({content:data.msg});
+					}
+				}
+			});
+			return false;
+		});
+
+
+</script>
+</body>
+</html>

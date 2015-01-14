@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+<!--sidebar-menu-->
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb">
+        <a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+        <a href="{:U('Selfform/index')}" <if condition="$navid eq $forumlist['WY_FORM']" >class="current"</if>>归属物业表单</a>
+        <foreach name="leftnav['wyform']" item="one">
+          <a href="__GROUP__/Selfform/elsemodellist/navid/{$one.id}/id/{$one.id}" <if condition="$navid eq $one['id']" >class="active"</if>>{$one.name}</a>
+        </foreach>
+
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>微信表单列表</h5>
+            <div class="buttons">
+            <a title="新建物业表单" class="btn btn-mini" href="{:U('Selfform/form_add')}"><i class="icon-plus"></i></a>
+          </div>
+          </div>
+          <div class="widget-content ">
+            <table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>
+                  <th style="width:65px;">表单编号</th>
+                  <th>表单名称</th>
+                  <th>权限</th>
+                  <th>关键字</th>
+                  <th>状态</th>
+                  <th>备注</th>
+                  <th class="center taskOptions">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+              <volist name="result" id="vo">
+                <tr>
+                  <td>{$vo.id}</td>
+                  <td>{$vo.name}</td>
+                  <td>全部用户</td>
+                  <td>{$vo.keyworks}</td>
+                  <td >
+                  <lt name='$vo.is_status' value='1'><span class="label label-success">正常</span><else/><span class="label label-success">已禁用</span></lt>
+                  </td>
+                  <td>{$vo.introduce}</td>
+                  <td class="center taskOptions">
+                  <a class="btn btn-info" href="__URL__/elsemodellist/id/{$vo.id}">
+                  <i class=" icon-align-justify icon-white"></i>
+                  数据列表
+                  </a>
+                  <a class="btn btn-info" href="__URL__/modelid/id/{$vo.id}" >
+                  <i class="icon-list-alt icon-white"></i>
+                  模型选项
+                  </a>
+                  <a class="btn btn-info" href="{:U('Selfform/edit_form')}?id={$vo.id}/navid/{$navid}">
+                  <i class="icon-edit icon-white"></i>
+                  编辑
+                  </a>
+                  <a class="btn btn-danger" href="#static"  id="{$vo.id}" data-toggle="modal">
+                  <i class="icon-trash icon-white"></i>
+                  删除
+                  </a>
+                  </td>
+                </tr>
+              </volist>
+                <!--分页s-->
+                <tr>
+                <th class="center taskOptions" colspan="8">
+                <div class="pagination alternate">
+                <ul>
+                <li>
+                {$page}
+                </li>
+                </ul>
+                </div>
+                </th>
+                </tr>
+              <!--分页e-->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end-main-container-part-->
+
+<include file="Public:footer" />
+<input name="del_value" type="hidden" id="del_value" value="0">
+{:FOOTERX()}
+<script type="text/javascript">
+  //删除
+$('.btn-danger').click(function(){
+  var id=$(this).attr('id');
+  $('#del_value').val(id);
+  mmodal({content:'确认删除该菜单',ok:1,closen:'取消'});
+});
+$(document).on('click','#mmodal_ajax_ok', function (e) {
+  //$('#myModal').modal('hide');
+  var id = $('#del_value').val();
+  $.post("{:U('Selfform/del_form')}",{id:id},function(data){
+    if(data.status==1){
+      window.location.href="{:U('Selfform/index')}";
+    }
+    mmodal({content:data.msg});
+  });
+})
+</script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<tr id="{$time}">
+	<td>
+		<div class="control-group">
+			<label class="control-label">图文图片:</label>
+			<div class="controls">
+				<input type="text" name="image[{$time}]" id="image{$time}"   class="span11" placeholder=""  />
+			</div>
+			<div class="controls">
+				<img class="img-rounded" id="uploadimg{$time}" height="80" width="160" src="__APP__/Public/admin/images/on_pic.jpg"/>
+			</div>
+			<div class="controls">
+				<input type="file" id="choseimg{$time}" name="choseimg{$time}" onchange="ajaxuploadimage('{$time}','__URL__','__APP__');"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label  class="control-label">图文标题：</label>
+			<div class="controls">
+				<input type="text" class="span11" size="16" name="title[{$time}]">
+			</div>
+		</div>
+		<div class="control-group">
+			<label  class="control-label">图文链接：</label>
+			<div class="controls">
+				<input type="text" class="span11" size="16" name="url[{$time}]">
+			</div>
+		</div>
+		<div class="control-group">
+			<label  class="control-label">说明：</label>
+			<div class="controls">
+				<textarea cols="40" class="span11" rows="6" placeholder="说明"  name="info[{$time}]"></textarea>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">内容
+			</label>
+			<div class="controls">
+				<textarea id="details{$time}" name="details[{$time}]"  rows="12" cols="80" style="width: 91%">
+				</textarea>
+			</div>
+		</div>
+	</td>
+	<td class="center">
+		<input type="hidden" id="fileide_13904" name="fileide_13904">
+		<a onclick="jsmove('up','{$time}');" class="btn btn-info">
+			<i class="icon-arrow-up icon-white"></i>上移
+		</a>
+		<a onclick="jsmove('down','{$time}');" class="btn btn-info">
+			<i class="icon-arrow-down icon-white"></i>下移
+		</a>
+		<a onclick="tuwen('remove','{$time}');" class="btn btn-danger">
+			<i class="icon-trash icon-white"></i>删除
+		</a>
+	</td>
+</tr>

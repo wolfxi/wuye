@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+
+
+<div class="container">
+	
+	<div class="row">
+		<h4 style="color:#ff4500;">请选择您所在的小区</h4>
+	</div>
+
+	<br/>
+
+
+	<div class="row">
+		<div class="center-block col-md-12">
+	
+			<form role="form" method="post" action="__URL__/chosexiaoqu/">
+			  <div class="form-group">
+			   
+				  <input type="text" value="{$search}" name="str" class="form-control" id="exampleInputEmail1" placeholder="输入小区名">
+			 	<br/>
+			   <button type="submit" class="btn btn-default center-block col-md-12 col-xs-12">搜索</button>
+			  </div>
+			 
+			</form>
+		</div>
+	</div>
+
+	<br/>
+
+
+	<div class="row">
+		<div class="center-block col-md-12">
+			<ul class="list-group">
+			<foreach name="result" item="one">
+			<li onclick="chose_one('{$one.id}','{$one.name}');"  class="list-group-item">
+			    <span class="badge"><i class="glyphicon glyphicon-ok"></i></span>
+				{$one.name}
+			  </li>
+			</foreach>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+<input type="hidden" value="0" id="choseid"/>
+
+</body>
+</html>
+{:FOOTERX_WAP()}
+
+
+
+<script type="text/javascript">
+function mmodal(param){
+var html='<div class="modal fade" id="';
+	if(param.id){html+=param.id;}else{html+='myModal';}
+	html+='" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content">';
+			if(param.header){
+			html+='<div class="modal-header"><h4 class="modal-title" id="myModalLabel">';
+					html+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+					html+=param.header;
+					html+='</h4></div>';
+			}
+			if(param.content){html+='<div class="modal-body">';html+=param.content;html+='</div>';}
+			if(param.close!=0 || param.ok==1){
+			html+='<div class="modal-footer">'
+				if(param.close!=0){
+				html+='<button type="button" class="btn" data-dismiss="modal">';
+					if(param.closen){html+=param.closen;}else{html+='确定';}
+					html+='</button>';
+				}
+				if(param.ok==1){
+				html+='<button type="button" class="btn btn-success" id="mmodal_ajax_ok">';
+					if(param.okn){html+=param.okn;}else{html+='确定';}
+					html+='</button>';
+				}
+				html+='</div>';
+			}
+			html+='</div></div></div>';
+$(html).modal();
+}
+
+
+
+//删除
+function chose_one(id,name){
+	var id=id;
+	$('#choseid').val(id);
+	mmodal({content:'<span>确定要加入此小区吗？</span><br/>当前小区为：'+name,ok:1,closen:'取消'});
+}
+$(document).on('click','#mmodal_ajax_ok', function (e) {
+		//$('#myModal').modal('hide');
+		var id = $('#choseid').val();
+		$.post("__URL__/savexiaoqu",{id:id},function(data){
+			if(data.flag==1){
+				window.location.href=data.msg;
+				return false;
+				}else{
+					window.alert(data.msg);
+					return false;
+				}
+			});
+		})
+
+</script>
+

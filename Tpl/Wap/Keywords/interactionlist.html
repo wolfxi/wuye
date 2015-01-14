@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+<if condition="$sresult|is_array">
+<div class="container-fluid">
+	<div class="row">
+		<ul class="bxslider">
+			<foreach name="sresult" item="one">
+		  		<li><a href="{$one.href}"><img class="col-md-12" style="padding-left:-10px;padding-right:-10px;" src="__APP__/{$one.image}" title="{$one.nameF}"/></a></li>
+		  	</foreach>
+		</ul>
+	</div>
+</div>
+</if>
+<br/>
+
+<div class="container">
+
+	<div class="row">
+		<div class="list-group">
+
+		<foreach name="result" item="one">
+		  <a href="__URL__/interactionone/id/{$one.id}" class="list-group-item">
+		  	<div class="row">
+
+			  	<div class="col-md-10 col-xs-10">
+			  		<div class="row">
+			  			<div class="col-md-12 col-xs-12">
+			  			<label class="pull-left">{$one.title}</label>
+			  			<label class="pull-right">{$one.post_time}</label>
+			  			</div>
+			  		</div>
+			  		<div class="row">
+			  			<div class="col-md-12 col-xs-12">
+			  				({$one.click_num}/{$one.reply} &nbsp;&nbsp;&nbsp;{$one.name})
+			  			</div>
+			  		</div>
+			  	</div>
+
+			  	<div class="col-md-2 col-xs-2">
+			  		<br/>
+			  		<div class="pull-right">
+			  			<i class="glyphicon glyphicon-circle-arrow-right pull-right"></i>
+			  		</div>
+			  	</div>
+
+		  	</div>
+		    
+		  </a>
+
+		</foreach>
+
+		 
+		</div>
+	</div>
+	<br/>
+	<div class="row">
+		<a href="__URL__/addmessage/id/{$id}"  class="btn btn-primary" />提交新内容<i class="glyphicon glyphicon-chevron-right pull-right"></i></a>
+	</div>
+
+	
+
+</div>
+
+
+</body>
+</html>
+{:FOOTERX_WAP()}
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.bxslider').bxSlider({auto: true});
+  $('.bx-controls-direction').remove();
+  //$('.bx-controls').css("marign-top","-100px");
+});
+</script>

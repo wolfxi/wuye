@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<load href="{$Think.config.Wurl}/Public/admin/css/bootstrap.min.css" />
+<load href="{$Think.config.Wurl}/Public/admin/css/bootstrap-responsive.min.css" />
+<load href="{$Think.config.Wurl}/Public/admin/css/matrix-login.css" />
+<load href="{$Think.config.Wurl}/Public/admin/css/font-awesome/css/font-awesome.css" />
+</head>
+
+<body>
+
+<div id="loginbox">  
+
+
+          
+    <form action="{$THINK.MODULE_NAME}{$THINK.ACTION_NAME}" method="post" class="form-vertical" id="loginform">
+    
+    
+         <div class="control-group normal_text"> <h3><img src="{$Think.config.Wurl}/Public/admin/images/logo.png"/></h3></div>
+
+
+
+
+        <div class="control-group">
+            <div class="controls">
+                <div class="main_input_box">
+                    <span class="add-on bg_lg"><i class="icon-user"></i></span><input name="username" type="text" id="username"  placeholder="请输入用户名" />
+                </div>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="controls">
+                <div class="main_input_box">
+                    <span class="add-on bg_ly"><i class="icon-lock"></i></span><input name="password" type="password" id="password"  placeholder="请输入密码" />
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+        <!--
+            <span class="pull-left"><a href="javascript:" class="flip-link btn btn-info" id="to-recover">忘记密码?</a></span>
+            -->
+            <span class="pull-right"><button type="submit" class="btn btn-success">登陆</button></span>
+        </div>
+    </form>
+    
+    
+    
+    <form id="recoverform" action="#" class="form-vertical">
+      <p class="normal_text">请输入您的E-Mail。我们将会发送重置密码的邮件给您找回密码。</p>
+        
+            <div class="controls">
+                <div class="main_input_box">
+                    <span class="add-on bg_lo"><i class="icon-envelope"></i></span><input type="text" placeholder="请填写E-Mail" />
+                </div>
+            </div>
+       
+        <div class="form-actions">
+            <span class="pull-left"><a href="javascript:" class="flip-link btn btn-success" id="to-login">&laquo; 返回登陆</a></span>
+            <span class="pull-right"><a class="btn btn-info"/>提交</a></span>
+        </div>
+  </form>
+    
+    
+    
+</div>
+        
+        
+</body>
+</html>
+<load href="{$Think.config.Wurl}/Public/admin/js/jquery.js" />
+<load href="{$Think.config.Wurl}/Public/admin/js/matrix.login.js" />

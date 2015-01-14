@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"><a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="{:U('System/user')}">账户信息</a> <a href="javascript:" class="current">修改账号信息</a></div>
+  </div>
+<!--End-breadcrumbs-->
+
+<!--Action boxes-->
+  <div class="container-fluid">
+
+    <div class="row-fluid">
+		
+      <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>修改账号信息</h5>
+        </div>
+        <div class="widget-content nopadding">
+          <form  action="{:U('System/simpledata')}" method="post" class="form-horizontal">
+            <div class="control-group">
+              <label class="control-label">登陆账户:</label>
+              <div class="controls">
+                <input name="username" readonly="readonly" value="{$result.username}" type="text" class="input-xlarge" id="username">
+              </div>
+            </div>
+          
+        
+
+            <div class="control-group">
+            <label class="control-label" for="appendedInput">新用户密码：</label>
+            <div class="controls">
+            <div class="input-append">
+            <input type="password" size="16" name="password" id="password">
+            </div>
+            <span class="help-inline">设置账户的新密码, 如不修改密码请留空</span>
+            </div>
+            </div>
+            
+
+            <div class="control-group">
+            <label class="control-label" for="appendedInput">确认密码：</label>
+            <div class="controls">
+            <div class="input-append">
+            <input type="password" size="16" name="repassword" id="repassword">
+            </div>
+            <span class="help-inline">请重新输入密码以确认无误, 如不修改密码请留空</span>
+            </div>
+            </div>
+
+
+            <div class="control-group">
+              <label class="control-label">真实姓名:</label>
+              <div class="controls">
+              	<div class="input-append">
+                	<input name="nickname" size="16" type="text" value="{$result.nickname}" class="input-xlarge"><span class="add-on">*</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="control-group">
+              <label class="control-label">联系电话:</label>
+              <div class="controls">
+                <input name="tel" type="text" value="{$result.tel}" class="input-xlarge" id="tel">
+              </div>
+            </div>
+            
+            <div class="control-group">
+              <label class="control-label">电子信箱:</label>
+              <div class="controls">
+              	<div class="input-append">
+                	<input name="email" size="16" value="{$result.email}" type="text" value="" class="input-xlarge" id="email"><span class="add-on">*</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="control-group">
+              <label class="control-label">是否启用：</label>
+              <div class="controls">
+              	<input name="status" type="checkbox" id="status" value="1" <eq name='result.status' value='1'>checked</eq>>
+              </div>
+            </div>
+            
+            <div class="control-group">
+              <label class="control-label">备注:</label>
+              <div class="controls">
+              	<textarea name="remark" rows="3" id="remark" class="input-xlarge">{$result.remark}</textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <input name="id" type="hidden" id="id" value="{$result.uid}">
+              <button type="submit" class="btn btn-success">保存</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--end-main-container-part-->
+
+<include file="Public:footer" />
+
+        
+        
+</body>
+</html>
+{:FOOTERX()}
+<script>
+
+
+$('form').submit(function(){
+  $(this).ajaxSubmit({
+    type: "post",
+    dataType: "json",
+    success: function(data){
+    if(data.status==1){
+      window.location.href="{:U('System/account')}";
+    }
+    mmodal({content:data.msg});
+    }
+  });
+  return false;
+});
+
+</script>

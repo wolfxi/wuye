@@ -1,0 +1,21 @@
+  $(function(){
+      $("#selectAll").click(function(){
+          $("input[name='dels[]']").each(function(){this.checked=true;});
+      });
+      $("#selectNone").click(function(){
+          $("input[name='dels[]']").each(function(){
+            if(this.checked==false){
+                this.checked=true;
+            }else if(this.checked==true){
+              this.checked=false;
+            }
+          });
+      });
+      $("#cancel").click(function(){
+         $("input[name='dels[]']").each(function(){
+            if(this.checked==true){
+              this.checked=false;
+            }
+          });
+      });
+  })

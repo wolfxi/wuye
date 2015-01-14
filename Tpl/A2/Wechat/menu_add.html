@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"><a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="{:U('Wechat/menu')}">自定义菜单</a> <a href="javascript:" class="current">{$title}</a></div>
+  </div>
+<!--End-breadcrumbs-->
+
+<!--Action boxes-->
+  <div class="container-fluid">
+
+    <div class="row-fluid">
+		
+      <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>{$title}</h5>
+        </div>
+        <div class="widget-content nopadding">
+          <form action="{$THINK.MODULE_NAME}{$THINK.ACTION_NAME}" method="post" class="form-horizontal">
+            <div class="control-group">
+              <label class="control-label">菜单名称:</label>
+              <div class="controls">
+                <input name="title" type="text" class="input-xlarge" id="title" placeholder="菜单名称不多于4个汉字或8个字母" value="{$menu.title}">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">父菜单:</label>
+              <div class="controls">
+                <select name="fid" id="fid">
+                  <option value="0">顶级菜单</option>
+                  <volist name='menu_top' id='vo'>
+                  <option value="{$vo.id}" <eq name='menu.fid' value='$vo.id'>selected</eq>>{$vo.title}</option>
+                  </volist>
+                </select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">类型：</label>
+              <div class="controls">
+                <label class="radio inline">
+                  <input name="type" type="radio" id="optionsRadios2" value="1" <eq name='menu.type' value='1'>checked</eq><empty name='menu'>checked</empty>>按钮
+                </label>
+                <label class="radio inline">
+                  <input type="radio" name="type" id="optionsRadios2" value="2" <eq name='menu.type' value='2'>checked</eq>>链接
+                </label>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label type_valve"><eq name='menu.type' value='1'>跳转网页<else/>关键字</eq>:</label>
+              <div class="controls">
+                <input name="value" type="text" class="input-large" id="value" value="{$menu.value}">
+              </div>
+            </div>
+            <div class="form-actions">
+              
+              <input name="id" type="hidden" id="id" value="{$menu.id}">
+              <button type="submit" class="btn btn-success">保存</button>
+              
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      
+        
+      
+    </div>
+  </div>
+</div>
+
+<!--end-main-container-part-->
+
+<include file="Public:footer" />
+
+        
+        
+</body>
+</html>
+{:FOOTERX()}
+<script>
+$("input[name='type']").click(function(){
+	var id= $(this).val();
+    if($(this).val()==1){
+		$('.type_valve').html('关键字:');
+	}else{
+		$('.type_valve').html('跳转网页:');
+	}
+});
+
+$('form').submit(function(){
+	$(this).ajaxSubmit({
+	  type: "post",
+	  dataType: "json",
+	  success: function(data){
+		if(data.status==1){
+			window.location.href="{:U('Wechat/menu')}";
+		}
+		mmodal({content:data.msg});
+	  }
+	});
+	return false;
+});
+
+</script>

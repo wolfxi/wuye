@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<!--main-container-part-->
+<div id="content">
+	<!--breadcrumbs-->
+	<div id="content-header">
+		<h1>物业管理</h1>
+		<div id="breadcrumb">
+			<a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a>
+			<a href="javascript:" class="current">物业列表</a>
+			<foreach name="navbar" item="one">
+			<a href="__URL__/one_messagetype_list/id/{$one.id}" class="current">{$one.name}</a>
+			</foreach>
+		</div>
+	</div>
+	<!--End-breadcrumbs-->
+	<!--Action boxes-->
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title">
+						<span class="icon"><i class="icon-th-list"></i></span>
+						<h5>添加物业收费</h5>
+					</div>
+					<div class="alert alert-error hide" id="alert_info">
+						<button type="button" class="close" onclick="$('#alert_info').hide();">×</button>
+						<div class="alert-body">
+							<span id="modal"></span>
+						</div>
+					</div>
+					<div class="widget-content nopadding">
+						<form action="__URL__/add_onlinepay" method="post" class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label">收费分组名称:</label>
+								<div class="controls">
+									<input type="text" class="span11 disabled" disabled="disabled" value="{$aresult.name}" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">物业编号 :</label>
+								<div class="controls">
+									<input type="text" class="span11"  name="title" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">每期收费金额 :</label>
+								<div class="controls">
+									<input type="text" class="span11" name="money"  />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">缴费到期月份:</label>
+								<div class="controls">
+									<input type="text" class="span11" name="lasttime"  />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">用户缴费说明:</label>
+								<div class="controls">
+									<textarea id="details" name="details" class="span11" rows="4"></textarea>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">备注:</label>
+								<div class="controls">
+									<textarea  name="remark" class="span11" rows="4"></textarea>
+								</div>
+							</div>
+							<div class="form-actions">
+									<input type="hidden" name="aid" value="{$aresult.id}"/>
+									<button type="submit" class="btn btn-success">提交</button>
+									<a href="javascript:window.history.back();void(0);" class="btn">取消</a>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<!--end-main-container-part-->
+
+				<include file="Public:footer" />
+				{:FOOTERX()}
+</body>
+</html>

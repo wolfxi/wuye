@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+<style type="text/css" rel="stylesheet">
+	body{
+		background: none repeat scroll 0% 0% #EEEEEE
+	}
+</style>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box">
+        <div class="widget-title"><span class="icon"><i class="icon-comment"></i></span>
+          <h5>给用户发消息</h5>
+        </div>
+        <div class="widget-content nopadding">
+          <form action="__URL__/user_user_updata" method="post" class="form-horizontal" id="act_form">
+            <div class="control-group">
+              <label class="control-label" for="appendedInput">微信信息</label>
+              <div class="controls"> 微信标识:{$user.openid}<br>
+                <!--微信号: <br />--> 微信名: {$user.weixin_name}<br>
+                地区: {$user.weixin_from|default='未知'}<br>
+                性别: <switch name='user.weixin_sex'><case value='1'>男</case><case value='2'>女</case><default />未知</switch><br>
+                <button type="button" id="btn_userupdate" class="btn btn-info">更新微信资料</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="appendedInput">附加信息</label>
+              <div class="controls"> 称呼: <br>
+                备注: <br>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="appendedInput">消息内容</label>
+              <div class="controls">
+                <textarea name="msg" cols="100" rows="4" id="msg"></textarea>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" id="btn_submit" class="btn btn-primary">发送消息</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+{:FOOTERX()}
+<script>
+$('#btn_userupdate').click(function(){
+	var openid='{$user.openid}';
+	$.post('__URL__/user_user_updata',{openid:openid},function(data){
+		window.location.reload();
+	});
+});
+$('#act_form').submit(function(){
+	var msg=$('#msg').val();
+	var openid='{$user.openid}';
+	$.post('__URL__/user_user_updata',{msg:msg,openid:openid,sendmsg:1},function(data){
+		if(data.msg){
+			alert(data.msg);return false;	
+		}
+		if(data.errcode==0){
+			alert('发送成功');
+			window.location.reload();
+		}else{
+			alert('发送失败');
+		}
+	});
+	return false;	
+});
+</script>
+</body>
+</html>

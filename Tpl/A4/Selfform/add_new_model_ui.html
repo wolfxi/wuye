@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+<!--sidebar-menu-->
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb">
+        <a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+        <a href="{:U('Selfform/index')}?navid={$navid}" <if condition="$navid eq $forumlist['WY_FORM']" >class="current"</if>>物业表单</a>
+        <foreach name="leftnav['wyform']" item="one">
+          <a href="__GROUP__/Selfform/elseModelList/navid/{$one.id}/id/{$one.id}" <if condition="$navid eq $one['id']" >class="active"</if>>{$one.name}</a>
+        </foreach>
+
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>微信表单列表</h5>
+            <div class="buttons">
+            <a title="新建选项" class="btn btn-mini" href="{:U('Selfform/add_new_model_ui')}"><i class="icon-plus"></i></a>
+          </div>
+          </div>
+       
+          <div class="widget-content ">
+            
+
+            <form action="{:U('Selfform/add_new_model')}" method="post" class="form-horizontal">
+            <div class="control-group">
+              <label class="control-label">选项名称</label>
+              <div class="controls">
+                <input id="name" name="name" type="text" class="span11"  />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">选项类容 </label>
+              <div class="controls">
+                <select id="type" class="selectpicker" style="width:200px;" data-width="150px" name="type" >
+                  <option value="1">单行文本</option>
+                  <option value="2">多行文本</option>
+                  <option value="3">下拉框</option>
+                  <option value="4">单选框</option>
+                  <option value="5">多选框</option>
+                  <option value="6">密码框</option>
+                  <option value="7">隐藏域</option>
+                  <option value="8">上传按钮</option>
+                  </select>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">默认值 </label>
+              <div class="controls">
+                <input id="defaultvalue" name="defaultvalue" type="text" class="span11"  />
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="appendedInput">表单选项</label>
+              <div class="controls">
+                <textarea class="span11" rows="4" cols="100" name="options"></textarea>
+                <span class="help-block">每行一个</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">内容限制 </label>
+              <div class="controls">
+                <select id="selectpicker" style="width:200px;" class="selectpicker" data-width="150px" name="selectpicker" >
+                  <option value="0">不做限制</option>
+                  <option value="1">邮件格式</option>
+                  <option value="2">手机号码</option>
+                  <option value="3">网址格式</option>
+                  <option value="4">QQ号码</option>
+                  <option value="5">字母格式</option>
+                  <option value="6">数字格式</option>
+                  <option value="7">邮政编码</option>
+                  </select>
+           </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="appendedInput">选项说明</label>
+              <div class="controls">
+                <textarea class="span11" rows="4" cols="100" name="introduce"></textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="appendedInput">设置</label>
+              <label class="control-label">必填
+              <input name="is_must" type="checkbox" id="is_must"></label>
+              <label class="control-label">列表显示 
+              <input name="is_display" type="checkbox" id="is_display" ></label>
+            </div>
+
+            <div class="controls">
+              <button type="submit" class="btn btn-success">保存</button>
+              <button type="reset" class="btn btn-success">取消</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+<!--end-main-container-part-->
+
+<include file="Public:footer" />
+{:FOOTERX()}
+<script type="text/javascript">
+$('form').submit(function(){
+  $(this).ajaxSubmit({
+    type: "post",
+    dataType: "json",
+    success: function(data){
+      alert(data.msg);
+    if(data.status==1){
+      window.location.href="__URL__/modelid/id/{$id}";
+    }
+   // mmodal({content:data.msg});
+    }
+  });
+  return false;
+});
+</script>
+</body>
+</html>

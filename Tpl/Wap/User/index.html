@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+
+
+<div class="container">
+
+    <div class="page-header">
+      <h3>查询中心<small>
+      <empty name='number'>
+      	您尚未绑定房号
+        <a href="__URL__/wuye_bind">
+        	<button type="button" class="btn btn-warning btn-xs">绑定</button>
+      	</a>
+       <else/>
+      	绑定的房号（{$number}）
+        <a href="__URL__/wuye_bind">
+      		<button type="button" class="btn btn-warning btn-xs">解绑</button>
+      	</a>
+       </empty>
+     </small></h3>
+    </div>
+    
+    <notempty name='number'>
+
+	<div class="row">
+		<volist name="list1" id="vo">
+          <a href="__URL__/costlist/id/{$vo.id}" class="list-group-item">
+		    {$vo.name}
+		    <i class="glyphicon glyphicon-circle-arrow-right pull-right"></i>
+		  </a>
+		  </volist>
+      <volist name="list2" id="vo">
+          <a href="__URL__/property/id/{$vo.id}" class="list-group-item">
+        {$vo.name}
+        <i class="glyphicon glyphicon-circle-arrow-right pull-right"></i>
+      </a>
+      </volist>
+		</div>
+	</div>
+    
+    </notempty>
+
+</div>
+
+
+</body>
+</html>
+{:FOOTERX_WAP()}

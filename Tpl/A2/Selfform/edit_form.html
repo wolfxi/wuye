@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+
+<include file="Public:header" />
+
+<div id="content">
+ <div id="content-header">
+    <div id="breadcrumb">
+        <a href="{:U('Index/index')}" title="首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+        <a href="{:U('Selfform/index')}?navid={$navid}" <if condition="$navid eq $forumlist['WY_FORM']" >class="current"</if>>物业表单</a>
+        <foreach name="leftnav['wyform']" item="one">
+          <a href="__GROUP__/Selfform/elsemodellist/navid/{$one.id}/id/{$one.id}" <if condition="$navid eq $one['id']" >class="active"</if>>{$one.name}</a>
+        </foreach>
+
+    </div>
+  </div>
+<div class="container-fluid">
+  <hr>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+          <h5>微信表单编辑</h5>
+        </div>
+        <div class="widget-content nopadding">
+
+
+
+          <form action="{:U('Selfform/form_data_save')}" method="post" class="form-horizontal">
+            <div class="control-group">
+              <label class="control-label">微信表单名称</label>
+              <div class="controls">
+                <input id="form_id" name="form_id" type="hidden" value="{$result.id}">
+                <input id="name" name="name" type="text" class="span11" value="{$result.name}"  />
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">关键字 </label>
+              <div class="controls">
+                <input id="keyworks" name="keyworks" type="text" class="span11" value="{$result.keyworks}" />
+              </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">图片Logo:</label>
+                <div class="controls">
+                  <input type="text" name="image" id="image" value="{$result.image}"  class="span11" placeholder=""  />
+                </div>
+                <div class="controls">
+                  <img class="img-rounded" width="160px" height="80px" id="uploadimg" src="__APP__/{$result.image}"/>
+                </div>
+                <div class="controls">
+                  <input type="file" id="choseimg" name="choseimg" onchange="ajaxuploadimage('choseimg','__URL__','__APP__');"/>
+                </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">简介</label>
+              <div class="controls">
+                <textarea id="introduce"  name="introduce" class="span11" >{$result.introduce}</textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">成功提交发微信息</label>
+              <div class="controls">
+                <textarea id="success_send_msg" name="success_send_msg" class="span11" >{$result.success_send_msg}</textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">提交成功提示</label>
+              <div class="controls">
+                <input id="success_info" value="{$result.success_info}" name="success_info" type="text" class="span11" />
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">提交失败提示</label>
+              <div class="controls">
+                <input id="faile_info" value="{$result.faile_info}" name="faile_info" type="text" class="span11" />
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">工作人员微信OPENID</label>
+              <div class="controls">
+                <input id="worker_openid" value="{$result.worker_openid}" name="worker_openid" type="text" class="span11" />
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">未处理提示时间(分钟)
+              </label>
+              <div class="controls">
+                <input id="agtime" value="{$result.agtime}" name="agtime" type="text" class="span11" />
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">接受提示OPENID
+              </label>
+              <div class="controls">
+                <input id="accept_openid" value="{$result.accept_openid}" name="accept_openid" type="text" class="span11" />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">详细内容
+              </label>
+              <div class="controls">
+                <textarea id="details_info" name="details_info" class="xheditor" rows="12" cols="80" >{$result.details_info|stripcslashes}</textarea>
+              </div>
+            </div>
+			<div class="control-group">
+				<label class="control-label">设置：</label>
+				<div class="controls">
+					<label class="checkbox inline">是否启用
+						<input name="is_status" value="1" type="checkbox" <if condition="$result['is_status'] eq 1">checked="checked"</if> id="is_status">
+					</label>
+					<label class="checkbox inline">快捷
+						<input name="is_shortcut" value="1"  type="checkbox" <if condition="$result['is_shortcut'] eq 1">checked="checked"</if> id="is_shortcut">
+					</label>
+           <label class="checkbox inline">必须绑定
+            <input name="is_bind" value="1"  type="checkbox" <if condition="$result['is_bind'] eq 1">checked="checked"</if> id="is_bind">
+          </label>
+          <label class="checkbox inline">允许匿名
+            <input name="is_anon" value="1"  type="checkbox" <if condition="$result['is_anon'] eq 1">checked="checked"</if> id="is_anon">
+          </label>
+
+				</div>
+			</div>
+            <div class="controls">
+              <button type="submit" class="btn btn-success">保存</button>
+              <button type="reset" class="btn btn-success">取消</button>
+            </div>
+          </form>
+
+
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<!--end-main-container-part-->
+<include file="Public:footer" />
+{:FOOTERX()}
+<script type="text/javascript">
+window.UEDITOR_HOME_URL='__APP__/Public/admin/js/ueditor/';
+window.onload=function(){
+	window.UEDITOR_CONFIG.initialFrameWidth=810;//初始化编辑器宽度,默认1000
+	window.UEDITOR_CONFIG.initialFrameHeight=400;  //初始化编辑器高度,默认320
+	window.UEDITOR_CONFIG.elementPathEnabled =false;
+	UE.getEditor('details_info');
+}
+</script>
+<script type="text/javascript">
+$('form').submit(function(){
+  $(this).ajaxSubmit({
+    type: "post",
+    dataType: "json",
+    success: function(data){
+    if(data.status==1){
+      window.location.reload();
+    }
+    mmodal({content:data.msg});
+    }
+  });
+  return false;
+});
+</script>
+</body>
+</html>

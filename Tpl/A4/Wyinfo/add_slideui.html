@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+<style type="text/css" rel="stylesheet">
+    body{
+        background: none repeat scroll 0% 0% #EEEEEE
+    }
+</style>
+
+</head>
+
+<body>
+
+
+	<!--Action boxes-->
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title">
+						<span class="icon"><i class="icon-th-list"></i></span>
+						<h5>添加幻灯片</h5>
+					</div>
+					<div class="alert alert-error hide" id="alert_info">
+						<button type="button" class="close" onclick="$('#alert_info').hide();">×</button>
+						<div class="alert-body">
+							<span id="modal"></span>
+						</div>
+					</div>
+					<div class="widget-content nopadding">
+						<form action="__URL__/add_slide" method="post" class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label">名称 :</label>
+								<div class="controls">
+									<input type="text"  style="width:80%;"  name="name" placeholder="" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">图片:</label>
+								<div class="controls">
+									<input type="text" name="image" id="image" style="width:80%;"   placeholder=""  />
+								</div>
+								<div class="controls">
+									<img class="img-rounded" id="uploadimg"  height="80px" width="160px" src="__APP__/Public/admin/images/on_pic.jpg"/><span>建议上传360X200的图片</span>
+								</div>
+								<div class="controls">
+									<input type="file" name="choseimg" id="choseimg" onchange="ajaxuploadimage('choseimg','__URL__','__APP__')"/>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">网址链接 :</label>
+								<div class="controls">
+									<input type="text" name="url"  style="width:80%;" />
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">备注 :</label>
+								<div class="controls">
+									<textarea  name="remark" rows="3" style="width:80%;" ></textarea>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">是否启用:</label>
+								<div class="controls">
+									<label class="checkbox inline">
+										<input type="checkbox" value="1" name="status" />
+										启用</label>
+								</div>
+							</div>
+							<div class="form-actions">
+									<input type="hidden" value="{$aid}" name="aid" />
+									<button type="submit" class="btn btn-success">提交</button>
+									<a href="javascript:window.history.back();void(0);" class="btn">取消</a>
+							</div>
+							</form>
+						</div>
+					</div>
+
+				<!--end-main-container-part-->
+
+				{:FOOTERX()}
+
+<script type="text/javascript" >
+$('form').submit(function(){
+	$(this).ajaxSubmit({
+	  type: "post",
+	  dataType: "json",
+	  success: function(data){
+		if(data.flag==1){
+			window.location.href="__URL__/one_type_slide/id/{$aid}";
+			return 0;
+		}
+		
+	  }
+	});
+	return false;
+});
+</script>
+
+
+
+</body>
+</html>

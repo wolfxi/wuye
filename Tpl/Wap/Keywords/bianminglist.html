@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+<if condition="$sresult|is_array">
+<div class="container-fluid">
+	<div class="row">
+		<ul class="bxslider">
+			<foreach name="sresult" item="one">
+		  		<li><a href="{$one.href}"><img class="col-md-12" style="padding-left:-10px;padding-right:-10px;" src="__APP__/{$one.image}" title="{$one.nameF}"/></a></li>
+		  	</foreach>
+		</ul>
+	</div>
+</div>
+</if>
+<br/>
+<div class="container">
+	
+
+	<div class="row">
+		<div class="list-group">
+
+		<foreach name="result" item="one">
+		  <a href="__URL__/bianmingone/id/{$one.id}" class="list-group-item">
+		  	<div class="row">
+
+			  	<div class="col-md-9 col-xs-9">
+			  		<div class="row">
+			  			<div class="col-md-12 col-xs-12">
+			  			<label class="pull-left">[{$one.title}]
+			  				<if condition="$one['is_top'] eq 1">
+			  					<span style="color: #FF0000">[顶]</span>
+			  				</if>
+			  			</label>
+			  			</div>
+			  		</div>
+			  	</div>
+
+			  	<div class="col-md-3 col-xs-3">
+			  		<div class="pull-right">	
+			  			<i class="glyphicon glyphicon-circle-arrow-right pull-right"></i>
+			  		</div>
+			  	</div>
+				<span class="pull-right">
+			  				发布时间：{$one.post_time}
+			  		</span> 
+		  	</div>
+		    
+		  </a>
+
+		</foreach>
+
+	 <ul class="pagination">
+        {$page}
+      </ul>
+		</div>
+	</div>
+	<!--<div class="row" >
+		<br/>
+		<a class="btn btn-primary col-md-12 col-xs-12 " href="__URL__/post_bianmingui/aid/{$_GET['id']}" >我要发布<span class="glyphicon glyphicon-plus"></span></a>
+	</div>-->
+
+     
+</div>
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+<div class="container">
+	    <div class="row" >
+	    <a style="background:#A2CD5A;" class="btn btn-default col-md-6 col-xs-6 " href="__URL__/post_bianmingui/aid/{$_GET['id']}" >我要发布 <span class=" glyphicon glyphicon-pencil"></span></a>
+
+
+	    		<!-- <a class="btn btn-primary col-md-4 col-xs-4 " href="__URL__/post_bianmingui/aid/{$_GET['id']}" >我要发布<span class="glyphicon glyphicon-plus"></span></a> -->
+		<a style="background:#A2CD5A;" class="btn btn-default col-md-6 col-xs-6 " onclick="window.history.go(-1)" >返回<span class="glyphicon glyphicon-repeat"></span></a>
+	</div>
+</div>
+
+</nav>
+
+</body>
+</html>
+{:FOOTERX_WAP()}
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.bxslider').bxSlider({auto: true});
+  $('.bx-controls-direction').remove();
+  //$('.bx-controls').remove();
+});
+</script>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$Think.config.Wname_a2}-{$Think.config.Wname}</title>
+{:HEADERX()}
+</head>
+
+<body>
+<include file="Public:header" /> 
+
+<!--main-container-part-->
+<div id="content">
+	<div id="content-header">
+		<h1>微信管理</h1>
+	</div>
+	<div id="breadcrumb"> <a class="tip-bottom" href="{:U('Index/index')}" data-original-title=""> <i class="icon-home"></i> 首页 </a> <a href="{:U('Wechat/config')}">微信设置</a> <a href="{:U('Wechat/keyreply')}">关键字回复设置</a> <a class="current" href="{:U('Wechat/tuwenreply')}">图文回复设置</a> <a href="{:U('Wechat/menu')}">自定义菜单</a> </div>
+
+
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title"><span class="icon"><i class="icon-th-list"></i></span>
+						<h5>添加 图文回复</h5>
+					</div>
+					<div id="alert_info" class="alert alert-error hide">
+						<button onclick="$('#alert_info').hide();" class="close" type="button">×</button>
+						<div class="alert-body"><span id="modal"></span></div>
+					</div>
+					<div class="widget-content nopadding">
+						<div class="step ui-formwizard-content" id="form-wizard-2" style="display: block;">
+							<form method="post" action="__URL__/save_updatetuwennext" class="form-horizontal ui-formwizard">
+							<div class="widget-title">
+								<a onclick="tuwen('add','');" class="label label-danger" href="#static">添加一行 </a>
+							</div>
+								<table class="table table-bordered" id="tab">
+									<thead>
+										<tr>
+											<th>内容</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="append_content">
+									<foreach name="result" item="one">
+									<tr id="{$one.id}">
+										<td>
+											<div class="control-group">
+												<label class="control-label">图文图片:</label>
+												<div class="controls">
+													<input type="text" name="image[{$one.id}]" id="image{$one.id}" value="{$one.image_path}"  class="span11" placeholder=""  />
+												</div>
+												<div class="controls">
+													<img class="img-rounded" id="uploadimg{$one.id}" width="160" height="80" src="__APP__/{$one.image_path}"/>
+												</div>
+												<div class="controls">
+													<input type="file" id="choseimg{$one.id}" name="choseimg{$one.id}" onchange="ajaxuploadimage('{$one.id}','__URL__','__APP__');"/>
+												</div>
+											</div>
+											<div class="control-group">
+												<label  class="control-label">图文标题：</label>
+												<div class="controls">
+													<input type="text" class="span11" size="16" name="title[{$one.id}]" value="{$one.image_title}">
+												</div>
+											</div>
+											<div class="control-group">
+												<label  class="control-label">图文链接：</label>
+												<div class="controls">
+													<input type="text" class="span11" size="16" name="url[{$one.id}]" value="{$one.image_url}">
+												</div>
+											</div>
+											<div class="control-group">
+												<label  class="control-label">说明：</label>
+												<div class="controls">
+													<textarea cols="40" class="span11" rows="6" placeholder="说明"  name="info[{$one.id}]">{$one.image_description}</textarea>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">内容
+												</label>
+												<div class="controls">
+													<textarea id="details{$one.id}" name="details[{$one.id}]"  rows="12" cols="80" style="width: 91%">{$one.reply_tucon|stripcslashes}</textarea>
+												</div>
+											</div>
+										</td>
+										<td class="center">
+											<input type="hidden" id="fileide_13904" name="fileide_13904">
+											 <a class="btn btn-success" onClick="move('__URL__/move_tuwen/aid/{$aid}','UP','{$one.id}');"><i class="icon-arrow-up"></i>上移</a>
+                							<a class="btn btn-success"  onClick="move('__URL__/move_tuwen/aid/{$aid}','DOWN','{$one.id}');"><i class="icon-arrow-down"></i>下移</a>
+											<a onclick="tuwen('remove','{$one.id}');" class="btn btn-danger">
+												<i class="icon-trash icon-white"></i>删除
+											</a>
+										</td>
+									</tr>
+									</foreach>
+
+
+									</tbody>
+								</table>
+								<!--图文信息编辑结束--></div>
+							<div class="form-actions">
+								<input name="aid" value="{$aid}" type="hidden"/>
+								<a class="btn btn-primary" href="javascript:window.location.back();" >上一步</a>
+								<input type="submit" value="提交" class="btn btn-primary ui-wizard-content ui-formwizard-button" id="next">
+								<a class="btn" href="__URL__/tuwenreply" >取消</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+</div>
+<!--end-main-container-part--> 
+<include file="Public:footer" />
+
+{:FOOTERX()}
+<script type="text/javascript">
+
+		               
+
+
+//添加/删除一个图文
+function tuwen(action,id){
+	if(action=="add"){
+		$.get("__URL__/get_oneui",function(data){
+				if(data.flag==1){
+					$("#append_content").append(data.content);
+					ueditors("details"+data.times);
+					return false;
+				}else{
+					return false;	
+				}
+			});
+	} 
+	if(action=="remove"){
+		$("#"+id).remove();
+	}
+}
+
+//js上下移动分类
+function jsmove(action,id){
+	var trcontent=$("#"+id);
+	if(action=="up"){
+		var pre=$("#"+id).prev();
+
+		if(pre.length!=0){
+			$(trcontent).insertBefore(pre);
+			return false; 
+		}else{
+			window.alert("已经是第一个了");
+			return false;
+		}
+	}else{
+		var next=$("#"+id).next();
+		if(next.length!=0){
+			$(trcontent).insertAfter(next);
+			return false;
+		}else{
+			window.alert("已经是最后一个了");
+			return false;
+		}
+	}
+}
+
+function ueditors(id){
+	window.UEDITOR_HOME_URL='__APP__/Public/admin/js/ueditor/';
+	window.UEDITOR_CONFIG.initialFrameWidth=810;//初始化编辑器宽度,默认1000
+	window.UEDITOR_CONFIG.initialFrameHeight=400;  //初始化编辑器高度,默认320
+	window.UEDITOR_CONFIG.elementPathEnabled =false;
+	UE.getEditor(id);
+	return ;
+}
+
+
+function reload_editor(){
+	<foreach name="result" item="one">
+	ueditors("details{$one.id}");
+	</foreach>
+}
+
+
+
+function ajaxuploadimage(id,url,app){
+	$.ajaxFileUpload({
+		secureuri:false,
+		dataType: "json",//返回json格式的数据  
+		url:url+"/ajaxupload",//要访问的后台地址  
+		fileElementId:"choseimg"+id,
+		success: function(data){
+			var flag=data.flag;
+			if(flag==1){
+				$("#image"+id).val(data.msg);
+				$("#uploadimg"+id).attr("src",app+"/"+data.msg);
+				return ;
+			}else{
+				window.alert(data.msg);
+				return ;
+			}
+		}
+	});
+}
+
+reload_editor();
+
+</script>
+</body>
+</html>

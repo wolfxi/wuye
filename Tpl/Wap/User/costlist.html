@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$Think.config.Wname}</title>
+{:HEADERX_WAP()}
+</head>
+
+<body>
+
+
+<div class="container">
+	<div class="row">
+		<h4 style="color:#ff4500;">{$number}-{$mresult.name}</h4>
+	</div>
+
+	<div class="row">
+			
+		<div class="pull-right">
+			<div class="btn-group">
+			  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			    选择显示的列<span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu"  role="menu">
+			  	<li>
+			    	 <div class="checkbox center-block">
+				        <label>
+				          <input type="checkbox" onclick="show_hide('shangqi');"> 上期读数
+				        </label>
+				    </div>
+			    </li>
+			    <li class="divider"></li>
+			    <li>
+			    	 <div class="checkbox center-block">
+				        <label>
+				          <input type="checkbox" onclick="show_hide('benqi');"> 本期读数
+				        </label>
+				    </div>
+			    </li>
+			    <li class="divider"></li>
+			    <li>
+			    	 <div class="checkbox center-block">
+				        <label>
+				          <input type="checkbox" onclick="show_hide('yuefen');"> 月份
+				        </label>
+				    </div>
+			    </li>
+			    <li class="divider"></li>
+			    <li>
+			    	 <div class="checkbox">
+				        <label>
+				          <input type="checkbox" onclick="show_hide('danjia');"> 单价
+				        </label>
+				    </div>
+			    </li>
+			    <li class="divider"></li>
+			    <li>
+			    	 <div class="checkbox">
+				        <label>
+				          <input type="checkbox" onclick="show_hide('zongjia');"> 总价
+				        </label>
+				    </div>
+			    </li>
+			    <li class="divider"></li>
+			    <li>
+			    	 <div class="checkbox">
+				        <label>
+				          <input type="checkbox" checked="checked" onclick="show_hide('beizhu');"> 备注
+				        </label>
+				    </div>
+			    </li>
+			    <li class="divider"></li>
+			  </ul>
+			</div>
+		</div>
+
+	</div>
+	<br/>
+
+
+	<div class="row">
+		<table class="table table-striped table-condensed">
+ 			<thead>
+ 				<tr class="active">
+ 					<td>
+ 						缴费项目
+ 					</td>
+ 					<td name="shangqi" style="display:none;">
+ 						上期读数
+ 					</td>
+ 					<td name="benqi" style="display:none;">
+ 						本期读数
+ 					</td>
+ 					<td name="yuefen" style="display:none;">
+ 						月份
+ 					</td>
+ 					<td name="danjia" style="display:none;">
+ 						单价
+ 					</td>
+ 					<td name="zongjia" style="display:none;">
+ 						总价
+ 					</td>
+ 					<td name="beizhu">
+ 						备注
+ 					</td>
+ 				</tr>
+ 			</thead>
+ 			<tfoot>
+ 			</tfoot>
+
+ 			<tbody>
+
+ 				<foreach name="fresult" item="one"> 
+ 				<tr>
+ 					<td>
+ 						{$one.name}
+ 					</td>
+ 					<foreach name="pay" item="one1">
+ 						<if condition="$one1['tid'] eq $one['id']">
+ 							<th name="shangqi" style="display:none;">
+		 						{$one1.shangqi}
+		 					</th>
+		 					<th name="benqi" style="display:none;">
+		 						{$one1.benqi}
+		 					</th>
+		 					<th name="yuefen" style="display:none;">
+		 						{$one1.time}
+		 					</th>
+		 					<th name="danjia" style="display:none;">
+		 						{$one1.pricenum}
+		 					</th>
+		 					<th name="zongjia" style="display:none;">
+		 						{$one1.countnum}
+		 					</th>
+		 					<th name="beizhu" >
+		 						{$one1.remark}
+		 					</th>
+	 					</if>
+ 					</foreach>
+ 				</tr>
+ 				</foreach>
+ 				<tr>
+ 					<td colspan="10">
+ 						合计:￥ {$totalmoney}
+ 					</td>
+ 				</tr>
+ 				<tr>
+ 					<td colspan="10">
+ 						收费期间:{$costlist.assess}
+ 					</td>
+ 				</tr>
+ 				<tr>
+ 					<td colspan="10">
+ 						缴费状态:<if condition="$costlist.is_status eq 1">已缴 <else/>过期</if>
+ 					</td>
+ 				</tr>
+ 			</tbody>
+
+		</table>
+
+
+	</div>
+
+	
+
+</div>
+
+
+</body>
+</html>
+{:FOOTERX_WAP()}
+<script>
+function show_hide(name){
+	$("td[name='"+name+"']").each(function(){
+		if($(this).is(":visible")==false){
+			$(this).show();
+		}else{
+			$(this).hide();
+		}
+
+	})
+}
+
+</script>

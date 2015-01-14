@@ -1,0 +1,60 @@
+<!--Header-part-->
+<div id="header">
+	<h1><a href="dashboard.html">Matrix Admin</a></h1>
+</div>
+<!--close-Header-part--> 
+
+<!--
+<!--top-Header-menu-->
+<div id="user-nav" class="navbar navbar-inverse">
+	<ul class="nav">
+		<li  class="dropdown" id="profile-messages" ><a title="" href="javascript:" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text"><php>echo $_SESSION[C('SysUserSessionName')];</php></span><b class="caret"></b></a>
+		<ul class="dropdown-menu">
+			<li><a href="{:U('Index/user_edit')}?id=<?php echo $_SESSION[C('SysUserSessionUid')]?>"><i class="icon-user"></i> 我的信息</a></li>
+			
+		</ul>
+		</li>
+		<!--   <li class="dropdown" id="menu-messages"><a href="javascript:" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
+		      <ul class="dropdown-menu">
+		        <li><a class="sAdd" title="" href="javascript:"><i class="icon-plus"></i> 新消息</a></li>
+		        <li class="divider"></li>
+		        <li><a class="sInbox" title="" href="javascript:"><i class="icon-envelope"></i> 收件箱</a></li>
+		        <li class="divider"></li>
+		        <li><a class="sOutbox" title="" href="javascript:"><i class="icon-arrow-up"></i> 发件箱</a></li>
+		        <li class="divider"></li>
+		        <li><a class="sTrash" title="" href="javascript:"><i class="icon-trash"></i> 垃圾箱</a></li>
+		      </ul>
+		    </li>
+		    <li class=""><a title="" href="javascript:"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li> -->
+	
+		<li class=""><a title="" href="{:U('Public/logout')}"><i class="icon icon-share-alt"></i> <span class="text">退出系统</span></a></li>
+	</ul>
+</div>
+<!--close-top-Header-menu-->
+
+
+<!--sidebar-menu-->
+<div id="sidebar"><a href="javascript:" class="visible-phone"><i class="icon icon-align-justify"></i> 菜单</a>
+	<ul>
+
+
+		<li class="<eq name='Think.MODULE_NAME' value='Index'>active</eq>"><a href="{:U('Index/index')}"><i class="icon icon-home"></i> <span>系统首页</span></a></li>
+
+		<li class="submenu <eq name='Think.MODULE_NAME' value='Shops'>active</eq>"><a href="javascript:"><i class="icon icon-cog"></i> <span>系统管理</span></a>
+		<ul <eq name='Think.MODULE_NAME' value='System'>style="display: block;"</eq>>
+			<li <if condition="is_int(strpos(ACTION_NAME,'account'))">style="font-weight:bold" </if>><a href="{:U('System/account')}">账号信息</a></li>
+			<li <if condition="is_int(strpos(ACTION_NAME,'wuye')) or is_int(strpos(ACTION_NAME,'xiaoqu'))">style="font-weight:bold" </if>><a href="{:U('System/wuye')}">物业公司信息</a></li>
+			<li <if condition="is_int(strpos(ACTION_NAME,'wuyeselform'))">style="font-weight:bold" </if>><a href="{:U('System/wuyeselform')}">归属物业表单列表</a></li>
+		</ul>
+		</li>
+
+
+
+
+		<li> <a href="{:U('Public/logout')}"><i class="icon icon-info-sign"></i> <span>退出系统</span></a></li>
+
+
+
+	</ul>
+</div>
+<!--sidebar-menu-->
